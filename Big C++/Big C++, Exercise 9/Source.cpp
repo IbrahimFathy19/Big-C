@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-
+#include <cstdlib>
 
 void p1();
 void p2(int argc, char* argv[]);
@@ -38,7 +38,6 @@ void p11();
 
 int main(int argc, char* argv[])
 {
-	std::cout << encrypt('z', "FEATHER") << "\n";
 	std::cout << "Write the code of the problem to show the solution of it: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
