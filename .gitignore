@@ -6,6 +6,8 @@ OS junk files
 *.[Oo]bj
 *.vcxproj
 *.VC.db
+*.VC.db-shm
+*.VC.db-wal
 *.exe
 *.vcxproj.filters
 *.user
