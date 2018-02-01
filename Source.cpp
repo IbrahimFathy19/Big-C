@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 
+
 void p1();
 void p2(int argc, char* argv[]);
 
@@ -21,9 +22,10 @@ void open_file_error(std::string file_name);
 /**
 	Remove duplicated chars from a std::string
 	@param str the string to remove the duplicated chars from
-	@return a string free of duplicated characters
 */
-std::string rmv_duplicate_string(std::string str);
+void rmv_duplicate_string(std::string& str);
+
+char encrypt(char c, std::string key);
 void p3();
 void p4();
 void p5();
@@ -36,6 +38,7 @@ void p11();
 
 int main(int argc, char* argv[])
 {
+	std::cout << encrypt('z', "FEATHER") << "\n";
 	std::cout << "Write the code of the problem to show the solution of it: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
@@ -77,7 +80,6 @@ int main(int argc, char* argv[])
 
 void p1()
 {
-
 	std::string file_name;
 	std::cout << "Enter the file name to read from? ";
 	std::cin >> file_name;
@@ -128,7 +130,6 @@ void p1()
 
 void p2(int argc, char* argv[])
 {
-	std::cout << argc << "\n" << rmv_duplicate_string(argv[1]);
 	
 	//input should be like this: crypt -d -kFEATHER encrypt.txt output.txt
 	if (argc > 5 || argc < 4)
@@ -156,18 +157,44 @@ void open_file_error(std::string file_name)
 	exit(1);
 }
 
-char encryt(char c, std::string key)
+char encrypt(char c, std::string key)
 {
-	return '0';
+	const short NLETTER = 26;
+	rmv_duplicate_string(key);
+	int initial_key_size = key.size();
+	//Append the alphabet chars to the KEY
+	for (int ch = 'Z'; ch > 'Z' - NLETTER; ch--)
+		key += static_cast<char> (ch);
 
+	rmv_duplicate_string(key);// remove the duplicated characters
+
+	std::string key_lower = key; // lower appended chars
+	//lower down the appended charcters
+	for (int i = initial_key_size, n = key.size(); i < n; i++)
+		key_lower[i] = tolower(key_lower[i]);
+
+	// Now we encrypt
+	int key_index;
+
+	if (c >= 'A' && c <= 'Z')
+	{
+		key_index = int(c) - 'A';
+		return key[key_index];
+	}
+	if (c >= 'a' && c <= 'z')
+	{
+		key_index = int(c) - 'a';
+		return key_lower[key_index];
+	}
+	return c;
 }
 
-std::string rmv_duplicate_string(std::string str)
+void rmv_duplicate_string(std::string& str)
 {
-	for (std::string::size_type i = 0, str_size = str.size(); i < str_size; i++)
+	for (std::string::size_type i = 0; i < str.size(); i++)
 	{
 		std::string::size_type j = i + 1;
-		while (j < str_size)
+		while (j < str.size())
 		{
 			if (str[i] == str[j])
 			{
@@ -179,7 +206,6 @@ std::string rmv_duplicate_string(std::string str)
 			}
 		}
 	}
-	return str;
 }
 void p3()
 {
