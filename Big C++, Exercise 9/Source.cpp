@@ -152,6 +152,7 @@ void p2(int argc, char* argv[])
 	std::ofstream outfile;
 	bool decrypt = false;
 	std::string key;
+	
 	//input should be like this: crypt -d -kFEATHER encrypt.txt output.txt
 	if (argc > 5 || argc < 4)
 		usage(std::string(argv[0]));
@@ -190,6 +191,8 @@ void p2(int argc, char* argv[])
 		usage(argv[0]);
 	if (nfile != 2)
 		usage(argv[0]);
+		
+	std::cout << "cryption is done! check output file\n"; 
 
 	encrypt_file(infile, outfile, key);
 	infile.close();
