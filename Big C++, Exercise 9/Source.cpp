@@ -4,9 +4,6 @@
 #include <sstream>
 #include <cstdlib>
 
-void p1();
-void p2(int argc, char* argv[]);
-
 /**
 	Prints the proper usage of the function (encrypt or decrypt)
 	@param program_name Program Name
@@ -25,7 +22,28 @@ void open_file_error(std::string file_name);
 */
 void rmv_duplicate_string(std::string& str);
 
+/**
+	Encrypts a charcter using a string key
+	@param c char to encrypt
+	@param key the key of encryption
+	@return the encrypted character
+*/
 char encrypt(char c, std::string key);
+
+/**
+	Encrypts an input stream and put the output in output stream
+*/
+void encrypt_file(std::istream& is, std::ostream& os, const std::string& key);
+
+/**
+	Converts a string into an integer
+	@param x The string that contains the integer as string
+	@return the integer value in string x
+*/
+int string_to_int(const std::string& x);
+
+void p1();
+void p2(int argc, char* argv[]);
 void p3();
 void p4();
 void p5();
@@ -129,17 +147,53 @@ void p1()
 
 void p2(int argc, char* argv[])
 {
-	
+	int nfile = 0;
+	std::ifstream infile;
+	std::ofstream outfile;
+	bool decrypt = false;
+	std::string key;
 	//input should be like this: crypt -d -kFEATHER encrypt.txt output.txt
 	if (argc > 5 || argc < 4)
 		usage(std::string(argv[0]));
-		
 	
-	for (int i = 0; i < argc; i++)
+	for (int i = 1; i < argc; i++)
 	{
 		std::string arg = std::string(argv[i]);
-		std::cout << arg << "\n";
+		if (arg.length() > 2 && arg[0] == '-')
+			// It is a command line option
+		{
+			char option = arg[1];
+			if (option == 'd')
+				decrypt = true;
+			else if (option == 'k')
+				key = arg.substr(2);
+		}
+		else
+			//file
+		{
+			nfile++;
+			if (nfile == 1)
+			{
+				infile.open(arg.c_str());
+				if (infile.fail()) 
+					open_file_error(arg);
+			}
+			else if (nfile == 2)
+			{
+				outfile.open(arg.c_str());
+				if (outfile.fail()) 
+					open_file_error(arg);
+			}
+		}
 	}
+	if (key.empty())
+		usage(argv[0]);
+	if (nfile != 2)
+		usage(argv[0]);
+
+	encrypt_file(infile, outfile, key);
+	infile.close();
+	outfile.close();
 }
 
 void usage(std::string programe_name)
@@ -205,6 +259,20 @@ void rmv_duplicate_string(std::string& str)
 			}
 		}
 	}
+}
+void encrypt_file(std::istream& is, std::ostream& os, const std::string& key)
+{
+	char c;
+	while (is.get(c))
+		os.put(encrypt(c, key));
+}
+
+int string_to_int(const std::string& x)
+{
+	int y;
+	std::istringstream istr(x);
+	istr >> y;
+	return y;
 }
 void p3()
 {
