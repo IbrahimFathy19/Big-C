@@ -5,6 +5,8 @@ OS junk files
 #Visual Studio files
 *.[Oo]bj
 *.vcxproj
+*.VC.db
+*.exe
 *.vcxproj.filters
 *.user
 *.aps
