@@ -67,6 +67,7 @@ int string_to_int(const std::string& x);
 
 std::string develop_Vigenere_key(char k);
 void encrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key);
+void decrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key);
 
 void p1();
 void p2(int argc, char* argv[]);
@@ -437,7 +438,7 @@ void p4(int argc, char* argv[])
 
 
 	if (decrypt == true)
-		encrypt_file_Vigenere(infile, outfile, key);
+		decrypt_file_Vigenere(infile, outfile, key);
 	else
 		encrypt_file_Vigenere(infile, outfile, key);
 
@@ -467,14 +468,20 @@ std::string develop_Vigenere_key(char k)
 void encrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key)
 {
 	rmv_dublicate_chars(key);
-	int key_size = key.size();
 	char c;
+	std::string key_alphabet;
 	while (is.get(c))
 	{
-		char ch = key[is.tellg() % key_size];// The char to be the start of the key
-		key = develop_Vigenere_key(toupper(ch));
-		std::cout << key << "\n";
-		os.put(encrypt(c, key));
+		std::cout << is.tellg() << "\n";
+		int key_index = is.tellg();
+		key_index = (key_index - 1)% key.size();
+		char ch = key[key_index];// The char to be the start of the key
+		//tellg gives 1 at the start
+
+		std::cout << "Char: " << ch << "\n";
+		key_alphabet = develop_Vigenere_key(toupper(ch));
+		std::cout << key_alphabet << "\n";
+		os.put(encrypt(c, key_alphabet));
 	}
 }
 
@@ -482,11 +489,19 @@ void decrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key)
 {
 	rmv_dublicate_chars(key);
 	char c;
+	std::string key_alphabet;
 	while (is.get(c))
 	{
-		char ch = key[is.tellg() % key.size()];// The char to be the start of the key
-		key = develop_Vigenere_key(toupper(ch));
-		os.put(decrypt(c, key));
+		std::cout << is.tellg() << "\n";
+		int key_index = is.tellg();
+		key_index = (key_index - 1)% key.size();
+		char ch = key[key_index];// The char to be the start of the key
+		//tellg gives 1 at the start
+
+		std::cout << "Char: " << ch << "\n";
+		key_alphabet = develop_Vigenere_key(toupper(ch));
+		std::cout << key_alphabet << "\n";
+		os.put(decrypt(c, key_alphabet));
 	}
 }
 
