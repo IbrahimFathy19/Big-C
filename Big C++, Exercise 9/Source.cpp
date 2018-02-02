@@ -15,9 +15,21 @@ void usage(std::string program__name);
 	@param file_name File name that could not be loaded
 */
 void open_file_error(std::string file_name);
+
+/**
+	Developes a 26 letter character forming the key
+	which are the letters of the premitive key (after removing duplicated
+	letters and then the alphabet is appended in reverse way)
+	@param key the very first key that's provided in command arguments
+*/
 void develop_key_26_chars(std::string & key);
 
-
+/**
+	Decrypts a char c using the given string key
+	@param c letter to be decrypted
+	@param key a string used to decrypt the char c
+	@return the decrypted character
+*/
 char decrypt(char c, std::string key);
 
 /**
@@ -39,6 +51,9 @@ char encrypt(char c, std::string key);
 */
 void encrypt_file(std::istream& is, std::ostream& os, const std::string& key);
 
+/**
+	Decrypts an input stream and put the output in output stream
+*/
 void decrypt_file(std::istream & is, std::ostream & os, const std::string & key);
 
 /**
@@ -235,15 +250,7 @@ void develop_key_26_chars(std::string & key)
 
 char encrypt(char c, std::string key)
 {
-	rmv_duplicate_string(key);
-	//int initial_key_size = key.size();
-
 	develop_key_26_chars(key);
-	std::string key_lower = key; // lower appended chars
-
-	//lower down the appended charcters
-	/*for (int i = initial_key_size, n = key.size(); i < n; i++)
-		key_lower[i] = tolower(key_lower[i]);*/
 
 	// Now we encrypt
 	int key_index;
@@ -285,6 +292,7 @@ char decrypt(char c, std::string key)
 				return alphabet[i];
 		}
 	}
+	//else
 	return c;
 }
 void rmv_duplicate_string(std::string& str)
