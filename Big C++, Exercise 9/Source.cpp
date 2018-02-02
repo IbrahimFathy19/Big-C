@@ -24,7 +24,7 @@ void open_file_error(std::string file_name);
 	letters and then the alphabet is appended in reverse way)
 	@param key the very first key that's provided in command arguments
 */
-void develop_key_26_chars(std::string & key);
+void develop_monoalphabetic_key(std::string & key);
 
 /**
 	Decrypts a char c using the given string key
@@ -38,7 +38,7 @@ char decrypt(char c, std::string key);
 	Remove duplicated chars from a std::string
 	@param str the string to remove the duplicated chars from
 */
-void rmv_duplicate_string(std::string& str);
+void rmv_dublicate_chars(std::string& str);
 
 /**
 	Encrypts a charcter using a string key
@@ -51,12 +51,12 @@ char encrypt(char c, std::string key);
 /**
 	Encrypts an input stream and put the output in output stream
 */
-void encrypt_file(std::istream& is, std::ostream& os, const std::string& key);
+void encrypt_file_monoalphabetic(std::istream& is, std::ostream& os, std::string& key);
 
 /**
 	Decrypts an input stream and put the output in output stream
 */
-void decrypt_file(std::istream & is, std::ostream & os, const std::string & key);
+void decrypt_file_monoalphabetic(std::istream & is, std::ostream & os, std::string & key);
 
 /**
 	Converts a string into an integer
@@ -65,10 +65,13 @@ void decrypt_file(std::istream & is, std::ostream & os, const std::string & key)
 */
 int string_to_int(const std::string& x);
 
+std::string develop_Vigenère_key(char k);
+void encrypt_file_Vigenère(std::istream& is, std::ostream& os, std::string& key);
+
 void p1();
 void p2(int argc, char* argv[]);
 void p3();
-void p4();
+void p4(int argc, char* argv[]);
 void p5();
 void p7();
 void p8();
@@ -79,6 +82,7 @@ void p11();
 
 int main(int argc, char* argv[])
 {
+	develop_Vigenère_key('T');
 	std::cout << "Write the code of the problem to show the solution of it: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
@@ -99,7 +103,7 @@ int main(int argc, char* argv[])
 		else if (problem_name == ("p3"))
 			p3();
 		else if (problem_name == ("p4"))
-			p4();
+			p4(argc, argv);
 		else if (problem_name == ("p5"))
 			p5();
 		else if (problem_name == ("p7"))
@@ -214,9 +218,9 @@ void p2(int argc, char* argv[])
 
 
 	if (decrypt == true)
-		decrypt_file(infile, outfile, key);
+		decrypt_file_monoalphabetic(infile, outfile, key);
 	else
-		encrypt_file(infile, outfile, key);
+		encrypt_file_monoalphabetic(infile, outfile, key);
 
 	std::cout << "cryption is done! check output file\n";
 	infile.close();
@@ -226,7 +230,7 @@ void p2(int argc, char* argv[])
 void usage(std::string programe_name)
 {
 	std::cout << "Usage: \n" << programe_name
-		<< " [-d] -kFEATHER encrypt.txt output.txt\n\n"
+		<< " [-d] -kFEATHER input.txt output.txt\n\n"
 		<< "parentheses[] means optional\n";
 	std::exit(1);
 }
@@ -237,23 +241,24 @@ void open_file_error(std::string file_name)
 	std::exit(1);
 }
 
-void develop_key_26_chars(std::string & key)
+void develop_monoalphabetic_key(std::string & key)
 {
 	const short NLETTER = 26;
-	rmv_duplicate_string(key);
+	rmv_dublicate_chars(key);
+
+	//to upper the letters of the key
+	for (int i = 0; i < NLETTER; i++)
+		key[i] = toupper(key[i]);
 
 	//Append the alphabet chars to the KEY
-	for (int ch = 'Z'; ch > 'Z' - NLETTER; ch--)
-		key += static_cast<char> (ch);
+	for (char ch = 'Z'; ch > 'Z' - NLETTER; ch--)
+		key += (ch);
 
-	rmv_duplicate_string(key);// remove the duplicated characters
+	rmv_dublicate_chars(key);// remove the duplicated characters
 }
 
 char encrypt(char c, std::string key)
 {
-	develop_key_26_chars(key);
-
-	// Now we encrypt
 	int key_index;
 
 	if (c >= 'A' && c <= 'Z')
@@ -264,7 +269,7 @@ char encrypt(char c, std::string key)
 	if (c >= 'a' && c <= 'z')
 	{
 		key_index = int(c) - 'a';
-		return tolower(key[key_index]);
+		return tolower(key[key_index]);//note that key contains upper letters only
 	}
 	//else
 	return c;
@@ -273,7 +278,6 @@ char encrypt(char c, std::string key)
 char decrypt(char c, std::string key)
 {
 	const short NLETTER = 26;
-	develop_key_26_chars(key);
 	std::string alphabet;
 
 	//generate alphabet letters
@@ -297,7 +301,7 @@ char decrypt(char c, std::string key)
 	return c;
 }
 
-void rmv_duplicate_string(std::string& str)
+void rmv_dublicate_chars(std::string& str)
 {
 	for (std::string::size_type i = 0; i < str.size(); i++)
 	{
@@ -316,15 +320,17 @@ void rmv_duplicate_string(std::string& str)
 	}
 }
 
-void encrypt_file(std::istream& is, std::ostream& os, const std::string& key)
+void encrypt_file_monoalphabetic(std::istream& is, std::ostream& os, std::string& key)
 {
+	develop_monoalphabetic_key(key);
 	char c;
 	while (is.get(c))
 		os.put(encrypt(c, key));
 }
 
-void decrypt_file(std::istream& is, std::ostream& os, const std::string& key)
+void decrypt_file_monoalphabetic(std::istream& is, std::ostream& os, std::string& key)
 {
+	develop_monoalphabetic_key(key);
 	char c;
 	while (is.get(c))
 		os.put(decrypt(c, key));
@@ -381,11 +387,106 @@ void p3()
 		letter_frequency[i] = letter_frequency[i] / file_length;// calculate frequency	
 		std::cout << (char)(i + 'A') << ": " << letter_frequency[i] << "\n";
 	}
+	input_file.close();
 }
 
-void p4()
+void p4(int argc, char* argv[])
 {
+	int nfile = 0;
+	std::ifstream infile;
+	std::ofstream outfile;
+	bool decrypt = false;
+	std::string key;
 
+	//input should be like this: crypt -d -kFEATHER encrypt.txt output.txt
+	if (argc > 5 || argc < 4)
+		usage(std::string(argv[0]));
+
+	for (int i = 1; i < argc; i++)
+	{
+		std::string arg = std::string(argv[i]);
+		if (arg.length() >= 2 && arg[0] == '-')
+			// It is a command line option
+		{
+			char option = arg[1];
+			if (option == 'd')
+				decrypt = true;
+			else if (option == 'k')
+				key = arg.substr(2);
+		}
+		else
+			//file
+		{
+			nfile++;
+			if (nfile == 1)
+			{
+				infile.open(arg.c_str());
+				if (infile.fail())
+					open_file_error(arg);
+			}
+			else if (nfile == 2)
+			{
+				outfile.open(arg.c_str());
+				if (outfile.fail())
+					open_file_error(arg);
+			}
+		}
+	}
+	if (key.empty() || nfile != 2)
+		usage(argv[0]);
+
+
+	if (decrypt == true)
+		encrypt_file_Vigenère(infile, outfile, key);
+	else
+		encrypt_file_Vigenère(infile, outfile, key);
+
+	std::cout << "cryption is done! check output file\n";
+	infile.close();
+	outfile.close();
+}
+
+std::string develop_Vigenère_key(char k)
+{
+	std::string key;
+
+	const short NLETTER = 26;
+	
+	//Append the alphabet chars to char k
+	char ch = k;
+	for (int i = 0; i < NLETTER; i++)
+	{
+		key += ch;
+		if (ch < 'Z')
+			ch++;
+		else if (ch >= 'Z')
+			ch = 'A';
+	}
+	return key;
+}
+
+void encrypt_file_Vigenère(std::istream& is, std::ostream& os, std::string& key)
+{
+	rmv_dublicate_chars(key);
+	char c;
+	while (is.get(c))
+	{
+		char ch = key[is.tellg() % key.size()];// The char to be the start of the key
+		develop_Vigenère_key(toupper(ch));
+		os.put(encrypt(c, key));
+	}
+}
+
+void decrypt_file_Vigenère(std::istream& is, std::ostream& os, std::string& key)
+{
+	rmv_dublicate_chars(key);
+	char c;
+	while (is.get(c))
+	{
+		char ch = key[is.tellg() % key.size()];// The char to be the start of the key
+		develop_Vigenère_key(toupper(ch));
+		os.put(decrypt(c, key));
+	}
 }
 
 void p5()
