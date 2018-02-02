@@ -8,7 +8,6 @@ OS junk files
 *.VC.db
 *.VC.db-shm
 *.VC.db-wal
-*.exe
 *.opendb
 *.sln
 *.vcxproj.filters
@@ -39,6 +38,10 @@ obj/
 [Rr]elease*/
 Ankh.NoLoad
 
+#Object files
+*.o
+*.exe
+*.obj
 #Tooling
 _ReSharper*/
 *.resharper
