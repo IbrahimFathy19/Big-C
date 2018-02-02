@@ -65,8 +65,8 @@ void decrypt_file_monoalphabetic(std::istream & is, std::ostream & os, std::stri
 */
 int string_to_int(const std::string& x);
 
-std::string develop_Vigenère_key(char k);
-void encrypt_file_Vigenère(std::istream& is, std::ostream& os, std::string& key);
+std::string develop_Vigenï¿½re_key(char k);
+void encrypt_file_Vigenï¿½re(std::istream& is, std::ostream& os, std::string& key);
 
 void p1();
 void p2(int argc, char* argv[]);
@@ -82,7 +82,7 @@ void p11();
 
 int main(int argc, char* argv[])
 {
-	develop_Vigenère_key('T');
+	develop_Vigenï¿½re_key('T');
 	std::cout << "Write the code of the problem to show the solution of it: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
@@ -372,7 +372,7 @@ void p3()
 		else if (ch >= 'a' && ch <= 'z')
 			letter_frequency[ch - 'a'] += 1;
 	}
-	
+
 	//calculate the size of file (number of characters)
 	input_file.clear(); /*clear the failure status, stream failed because it
 		has reached the end of file*/
@@ -380,11 +380,11 @@ void p3()
 	input_file.seekg(0, std::ios::end);//move get position to the end of the file
 	std::streamoff file_length = input_file.tellg();//number of characters
 	//std::streamoff is long long type
-	
+
 	std::cout << "Letter Frequencies are:\n";
 	for (int i = 0; i < NLETTER; i++)
 	{
-		letter_frequency[i] = letter_frequency[i] / file_length;// calculate frequency	
+		letter_frequency[i] = letter_frequency[i] / file_length;// calculate frequency
 		std::cout << (char)(i + 'A') << ": " << letter_frequency[i] << "\n";
 	}
 	input_file.close();
@@ -437,21 +437,21 @@ void p4(int argc, char* argv[])
 
 
 	if (decrypt == true)
-		encrypt_file_Vigenère(infile, outfile, key);
+		encrypt_file_Vigenï¿½re(infile, outfile, key);
 	else
-		encrypt_file_Vigenère(infile, outfile, key);
+		encrypt_file_Vigenï¿½re(infile, outfile, key);
 
 	std::cout << "cryption is done! check output file\n";
 	infile.close();
 	outfile.close();
 }
 
-std::string develop_Vigenère_key(char k)
+std::string develop_Vigenï¿½re_key(char k)
 {
 	std::string key;
 
 	const short NLETTER = 26;
-	
+
 	//Append the alphabet chars to char k
 	char ch = k;
 	for (int i = 0; i < NLETTER; i++)
@@ -465,26 +465,26 @@ std::string develop_Vigenère_key(char k)
 	return key;
 }
 
-void encrypt_file_Vigenère(std::istream& is, std::ostream& os, std::string& key)
+void encrypt_file_Vigenï¿½re(std::istream& is, std::ostream& os, std::string& key)
 {
 	rmv_dublicate_chars(key);
 	char c;
 	while (is.get(c))
 	{
 		char ch = key[is.tellg() % key.size()];// The char to be the start of the key
-		develop_Vigenère_key(toupper(ch));
+		develop_Vigenï¿½re_key(toupper(ch));
 		os.put(encrypt(c, key));
 	}
 }
 
-void decrypt_file_Vigenère(std::istream& is, std::ostream& os, std::string& key)
+void decrypt_file_Vigenï¿½re(std::istream& is, std::ostream& os, std::string& key)
 {
 	rmv_dublicate_chars(key);
 	char c;
 	while (is.get(c))
 	{
 		char ch = key[is.tellg() % key.size()];// The char to be the start of the key
-		develop_Vigenère_key(toupper(ch));
+		develop_Vigenï¿½re_key(toupper(ch));
 		os.put(decrypt(c, key));
 	}
 }
