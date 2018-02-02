@@ -42,6 +42,8 @@ Ankh.NoLoad
 *.o
 *.exe
 *.obj
+*.File
+
 #Tooling
 _ReSharper*/
 *.resharper
