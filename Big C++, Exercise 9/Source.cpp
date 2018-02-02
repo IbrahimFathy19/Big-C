@@ -39,6 +39,8 @@ char encrypt(char c, std::string key);
 */
 void encrypt_file(std::istream& is, std::ostream& os, const std::string& key);
 
+void decrypt_file(std::istream & is, std::ostream & os, const std::string & key);
+
 /**
 	Converts a string into an integer
 	@param x The string that contains the integer as string
@@ -60,7 +62,6 @@ void p11();
 
 int main(int argc, char* argv[])
 {
-	std::cout << decrypt('F', "FEATHER") << "\n";
 	std::cout << "Write the code of the problem to show the solution of it: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
@@ -192,14 +193,16 @@ void p2(int argc, char* argv[])
 			}
 		}
 	}
-	if (key.empty())
+	if (key.empty() || nfile != 2)
 		usage(argv[0]);
-	if (nfile != 2)
-		usage(argv[0]);
-		
-	std::cout << "cryption is done! check output file\n"; 
+	
 
-	encrypt_file(infile, outfile, key);
+	if (decrypt == false)
+		decrypt_file(infile, outfile, key);
+	else
+		encrypt_file(infile, outfile, key);
+
+	std::cout << "cryption is done! check output file\n";
 	infile.close();
 	outfile.close();
 }
@@ -307,6 +310,13 @@ void encrypt_file(std::istream& is, std::ostream& os, const std::string& key)
 	char c;
 	while (is.get(c))
 		os.put(encrypt(c, key));
+}
+
+void decrypt_file(std::istream& is, std::ostream& os, const std::string& key)
+{
+	char c;
+	while (is.get(c))
+		os.put(decrypt(c, key));
 }
 
 int string_to_int(const std::string& x)
