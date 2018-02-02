@@ -277,7 +277,7 @@ char decrypt(char c, std::string key)
 
 	for (std::string::size_type i = 0; i < NLETTER; i++)
 	{
-		if (c == key[i])
+		if (toupper(c) == key[i])//note that key contains upper letters only
 		{
 			if (islower(c))
 				return tolower(alphabet[i]);
@@ -326,6 +326,7 @@ int string_to_int(const std::string& x)
 	istr >> y;
 	return y;
 }
+
 void p3()
 {
 
