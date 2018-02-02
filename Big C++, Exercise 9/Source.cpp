@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <vector>
+
 
 /**
 	Prints the proper usage of the function (encrypt or decrypt)
@@ -125,10 +127,8 @@ void p1()
 	std::ifstream input_fs(file_name.c_str());
 	input_fs.seekg(0, std::ios::end);//move get position to the end of the file
 
-
 	std::streamoff file_length = input_fs.tellg();//number of characters
 	//std::streamoff is long long type
-
 
 	std::cout << "File size: " << file_length << "\n";
 
@@ -140,7 +140,8 @@ void p1()
 		word_count++;
 
 	std::cout << "Number of words: " << word_count << "\n";
-	input_fs.clear();
+	input_fs.clear();/*clear the failure status, stream failed because it
+	has reached the end of file*/
 
 	input_fs.seekg(0, std::ios::beg);//move the get position to the start over
 	std::string line;
@@ -295,6 +296,7 @@ char decrypt(char c, std::string key)
 	//else
 	return c;
 }
+
 void rmv_duplicate_string(std::string& str)
 {
 	for (std::string::size_type i = 0; i < str.size(); i++)
@@ -313,6 +315,7 @@ void rmv_duplicate_string(std::string& str)
 		}
 	}
 }
+
 void encrypt_file(std::istream& is, std::ostream& os, const std::string& key)
 {
 	char c;
@@ -337,7 +340,47 @@ int string_to_int(const std::string& x)
 
 void p3()
 {
+	std::ifstream input_file;
+	std::cout << "Enter the input file name\\directory: ";
+	std::string file_directory;
+	std::cin >> file_directory;
+	input_file.open(file_directory.c_str());
+	if (input_file.fail())
+	{
+		std::cout << "Error opening file\n";
+		return;
+	}
 
+	const int NLETTER = 26;
+	std::vector<double> letter_frequency(NLETTER, 0); /* each element denotes a
+	character's frequnecy, for example letter_frequency[0] denotes
+	letter A frequency and so on according to their arrangemnt in alphabet*/
+
+	char ch;
+	while (input_file.get(ch))
+	{
+		if (ch >= 'A' && ch <= 'Z') //uppercase letter
+			letter_frequency[ch - 'A'] += 1;/*if (ch == 'A') then the changed element
+		in the vector is letter_frequency[0] which is really denotes to
+		character's 'A' frequnecy*/
+		else if (ch >= 'a' && ch <= 'z')
+			letter_frequency[ch - 'a'] += 1;
+	}
+	
+	//calculate the size of file (number of characters)
+	input_file.clear(); /*clear the failure status, stream failed because it
+		has reached the end of file*/
+
+	input_file.seekg(0, std::ios::end);//move get position to the end of the file
+	std::streamoff file_length = input_file.tellg();//number of characters
+	//std::streamoff is long long type
+	
+	std::cout << "Letter Frequencies are:\n";
+	for (int i = 0; i < NLETTER; i++)
+	{
+		letter_frequency[i] = letter_frequency[i] / file_length;// calculate frequency	
+		std::cout << (char)(i + 'A') << ": " << letter_frequency[i] << "\n";
+	}
 }
 
 void p4()
