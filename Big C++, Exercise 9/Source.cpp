@@ -12,7 +12,7 @@ void usage(std::string program__name);
 
 /**
 	Prints error when facing troubles in opening files and terminate the program
-	@param file_name File name that could not be loaded 
+	@param file_name File name that could not be loaded
 */
 void open_file_error(std::string file_name);
 void develop_key_26_chars(std::string & key);
@@ -60,7 +60,6 @@ void p11();
 
 int main(int argc, char* argv[])
 {
-	std::cout << decrypt('F', "FEATHER") << "\n";
 	std::cout << "Write the code of the problem to show the solution of it: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
@@ -108,8 +107,8 @@ void p1()
 
 	std::ifstream input_fs(file_name.c_str());
 	input_fs.seekg(0, std::ios::end);//move get position to the end of the file
-	
-	
+
+
 	std::streamoff file_length = input_fs.tellg();//number of characters
 	//std::streamoff is long long type
 
@@ -117,12 +116,12 @@ void p1()
 	std::cout << "File size: " << file_length << "\n";
 
 	input_fs.seekg(0, std::ios::beg);//move the get position to the start again
-	
+
 	std::string word;
 	int word_count = 0;
 	while (input_fs >> word)
 		word_count++;
-	
+
 	std::cout << "Number of words: " << word_count << "\n";
 	input_fs.clear();
 
@@ -131,7 +130,7 @@ void p1()
 	int line_count = 0;
 	while (getline(input_fs, line))
 		line_count++;
-	
+
 	std::cout << "Number of lines: " << line_count << "\n";
 	input_fs.close();
 
@@ -157,11 +156,11 @@ void p2(int argc, char* argv[])
 	std::ofstream outfile;
 	bool decrypt = false;
 	std::string key;
-	
+
 	//input should be like this: crypt -d -kFEATHER encrypt.txt output.txt
 	if (argc > 5 || argc < 4)
 		usage(std::string(argv[0]));
-	
+
 	for (int i = 1; i < argc; i++)
 	{
 		std::string arg = std::string(argv[i]);
@@ -181,13 +180,13 @@ void p2(int argc, char* argv[])
 			if (nfile == 1)
 			{
 				infile.open(arg.c_str());
-				if (infile.fail()) 
+				if (infile.fail())
 					open_file_error(arg);
 			}
 			else if (nfile == 2)
 			{
 				outfile.open(arg.c_str());
-				if (outfile.fail()) 
+				if (outfile.fail())
 					open_file_error(arg);
 			}
 		}
@@ -196,10 +195,11 @@ void p2(int argc, char* argv[])
 		usage(argv[0]);
 	if (nfile != 2)
 		usage(argv[0]);
-		
-	std::cout << "cryption is done! check output file\n"; 
+
 
 	encrypt_file(infile, outfile, key);
+
+	std::cout << "cryption is done! check output file\n"; 
 	infile.close();
 	outfile.close();
 }
@@ -293,7 +293,7 @@ void rmv_duplicate_string(std::string& str)
 		{
 			if (str[i] == str[j])
 			{
-				str.erase(j, 1); 
+				str.erase(j, 1);
 			}
 			else
 			{
@@ -347,7 +347,7 @@ void p8()
 {
 
 }
- 
+
 void p9()
 {
 
