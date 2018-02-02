@@ -14,7 +14,11 @@ void usage(std::string program__name);
 	Prints error when facing troubles in opening files and terminate the program
 	@param file_name File name that could not be loaded 
 */
-void open_file_error(std::string file_name); 
+void open_file_error(std::string file_name);
+void develop_key_26_chars(std::string & key);
+
+
+char decrypt(char c, std::string key);
 
 /**
 	Remove duplicated chars from a std::string
@@ -56,6 +60,7 @@ void p11();
 
 int main(int argc, char* argv[])
 {
+	std::cout << decrypt('F', "FEATHER") << "\n";
 	std::cout << "Write the code of the problem to show the solution of it: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
@@ -213,18 +218,26 @@ void open_file_error(std::string file_name)
 	std::exit(1);
 }
 
-char encrypt(char c, std::string key)
+void develop_key_26_chars(std::string & key)
 {
 	const short NLETTER = 26;
 	rmv_duplicate_string(key);
-	int initial_key_size = key.size();
+
 	//Append the alphabet chars to the KEY
 	for (int ch = 'Z'; ch > 'Z' - NLETTER; ch--)
 		key += static_cast<char> (ch);
 
 	rmv_duplicate_string(key);// remove the duplicated characters
+}
 
+char encrypt(char c, std::string key)
+{
+	rmv_duplicate_string(key);
+	int initial_key_size = key.size();
+
+	develop_key_26_chars(key);
 	std::string key_lower = key; // lower appended chars
+
 	//lower down the appended charcters
 	for (int i = initial_key_size, n = key.size(); i < n; i++)
 		key_lower[i] = tolower(key_lower[i]);
@@ -242,9 +255,35 @@ char encrypt(char c, std::string key)
 		key_index = int(c) - 'a';
 		return key_lower[key_index];
 	}
+	//else
 	return c;
 }
 
+char decrypt(char c, std::string key)
+{
+	const short NLETTER = 26;
+	develop_key_26_chars(key);
+	std::string alphabet;
+
+	//generate alphabet letters
+	for (char ch = 'A'; ch <= 'Z'; ch++)
+		alphabet += ch;
+
+	// now we have two strings each of length 26: key and alphabet
+	// We decrypt as follows
+
+	for (std::string::size_type i = 0; i < NLETTER; i++)
+	{
+		if (c == key[i])
+		{
+			if (islower(c))
+				return tolower(alphabet[i]);
+			else
+				return alphabet[i];
+		}
+	}
+	return c;
+}
 void rmv_duplicate_string(std::string& str)
 {
 	for (std::string::size_type i = 0; i < str.size(); i++)
