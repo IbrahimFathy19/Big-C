@@ -448,7 +448,6 @@ void p4(int argc, char* argv[])
 std::string develop_Vigenere_key(char k)
 {
 	std::string key;
-
 	const short NLETTER = 26;
 
 	//Append the alphabet chars to char k
@@ -471,7 +470,7 @@ void encrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key)
 	while (is.get(c))
 	{
 		char ch = key[is.tellg() % key.size()];// The char to be the start of the key
-		develop_Vigenere_key(toupper(ch));
+		key = develop_Vigenere_key(toupper(ch));
 		os.put(encrypt(c, key));
 	}
 }
@@ -483,7 +482,7 @@ void decrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key)
 	while (is.get(c))
 	{
 		char ch = key[is.tellg() % key.size()];// The char to be the start of the key
-		develop_Vigenere_key(toupper(ch));
+		key = develop_Vigenere_key(toupper(ch));
 		os.put(decrypt(c, key));
 	}
 }
