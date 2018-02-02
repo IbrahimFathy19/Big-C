@@ -85,6 +85,7 @@ int main(int argc, char* argv[])
 	std::cout << "Write the code of the problem to show the solution of it: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
+
 	std::cout << "Contents: p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11," << std::endl
 		<< "p12, p13, p14, p15, p19, p20" << std::endl
 		<< "******\n";
@@ -466,11 +467,13 @@ std::string develop_Vigenere_key(char k)
 void encrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key)
 {
 	rmv_dublicate_chars(key);
+	int key_size = key.size();
 	char c;
 	while (is.get(c))
 	{
-		char ch = key[is.tellg() % key.size()];// The char to be the start of the key
+		char ch = key[is.tellg() % key_size];// The char to be the start of the key
 		key = develop_Vigenere_key(toupper(ch));
+		std::cout << key << "\n";
 		os.put(encrypt(c, key));
 	}
 }
