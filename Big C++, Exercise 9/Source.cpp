@@ -65,8 +65,8 @@ void decrypt_file_monoalphabetic(std::istream & is, std::ostream & os, std::stri
 */
 int string_to_int(const std::string& x);
 
-std::string develop_Vigen�re_key(char k);
-void encrypt_file_Vigen�re(std::istream& is, std::ostream& os, std::string& key);
+std::string develop_Vigenere_key(char k);
+void encrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key);
 
 void p1();
 void p2(int argc, char* argv[]);
@@ -82,7 +82,6 @@ void p11();
 
 int main(int argc, char* argv[])
 {
-	develop_Vigen�re_key('T');
 	std::cout << "Write the code of the problem to show the solution of it: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
@@ -437,16 +436,16 @@ void p4(int argc, char* argv[])
 
 
 	if (decrypt == true)
-		encrypt_file_Vigen�re(infile, outfile, key);
+		encrypt_file_Vigenere(infile, outfile, key);
 	else
-		encrypt_file_Vigen�re(infile, outfile, key);
+		encrypt_file_Vigenere(infile, outfile, key);
 
 	std::cout << "cryption is done! check output file\n";
 	infile.close();
 	outfile.close();
 }
 
-std::string develop_Vigen�re_key(char k)
+std::string develop_Vigenere_key(char k)
 {
 	std::string key;
 
@@ -465,26 +464,26 @@ std::string develop_Vigen�re_key(char k)
 	return key;
 }
 
-void encrypt_file_Vigen�re(std::istream& is, std::ostream& os, std::string& key)
+void encrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key)
 {
 	rmv_dublicate_chars(key);
 	char c;
 	while (is.get(c))
 	{
 		char ch = key[is.tellg() % key.size()];// The char to be the start of the key
-		develop_Vigen�re_key(toupper(ch));
+		develop_Vigenere_key(toupper(ch));
 		os.put(encrypt(c, key));
 	}
 }
 
-void decrypt_file_Vigen�re(std::istream& is, std::ostream& os, std::string& key)
+void decrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key)
 {
 	rmv_dublicate_chars(key);
 	char c;
 	while (is.get(c))
 	{
 		char ch = key[is.tellg() % key.size()];// The char to be the start of the key
-		develop_Vigen�re_key(toupper(ch));
+		develop_Vigenere_key(toupper(ch));
 		os.put(decrypt(c, key));
 	}
 }
