@@ -10,6 +10,7 @@ OS junk files
 *.VC.db-wal
 *.exe
 *.opendb
+*.sln
 *.vcxproj.filters
 *.user
 *.aps
