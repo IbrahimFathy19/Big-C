@@ -10,13 +10,13 @@
 	Prints the proper usage of the function (encrypt or decrypt)
 	@param program_name Program Name
 */
-void usage(std::string program__name);
+void usage(const std::string& programe_name);
 
 /**
 	Prints error when facing troubles in opening files and terminate the program
 	@param file_name File name that could not be loaded
 */
-void open_file_error(std::string file_name);
+void open_file_error(const std::string& file_name);
 
 /**
 	Developes a 26 letter character forming the key
@@ -27,26 +27,26 @@ void open_file_error(std::string file_name);
 void develop_monoalphabetic_key(std::string & key);
 
 /**
+	Encrypts a charcter using a string key
+	@param c char to encrypt
+	@param key the key of encryption
+	@return the encrypted character
+*/
+char encrypt(char c, const std::string& key);
+
+/**
 	Decrypts a char c using the given string key
 	@param c letter to be decrypted
 	@param key a string used to decrypt the char c
 	@return the decrypted character
 */
-char decrypt(char c, std::string key);
+char decrypt(char c, const std::string& key);
 
 /**
 	Remove duplicated chars from a std::string
 	@param str the string to remove the duplicated chars from
 */
 void rmv_dublicate_chars(std::string& str);
-
-/**
-	Encrypts a charcter using a string key
-	@param c char to encrypt
-	@param key the key of encryption
-	@return the encrypted character
-*/
-char encrypt(char c, std::string key);
 
 /**
 	Encrypts an input stream and put the output in output stream
@@ -65,8 +65,24 @@ void decrypt_file_monoalphabetic(std::istream & is, std::ostream & os, std::stri
 */
 int string_to_int(const std::string& x);
 
+/**
+	Develops alphabet which is just the regular alphabet shifted to start at
+	character k
+	@param k character of the key used to be the start of the alphabet key
+	@return the alphabet key
+*/
 std::string develop_Vigenere_key(char k);
+
+/**
+	Encrypts a file characters according to their position in the file
+	follows the method of vigenere cipher
+*/
 void encrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key);
+
+/**
+	Decrypts a file characters according to their position in the file
+	follows the method of vigenere cipher
+*/
 void decrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key);
 
 void p1();
@@ -228,7 +244,7 @@ void p2(int argc, char* argv[])
 	outfile.close();
 }
 
-void usage(std::string programe_name)
+void usage(const std::string& programe_name)
 {
 	std::cout << "Usage: \n" << programe_name
 		<< " [-d] -kFEATHER input.txt output.txt\n\n"
@@ -236,7 +252,7 @@ void usage(std::string programe_name)
 	std::exit(1);
 }
 
-void open_file_error(std::string file_name)
+void open_file_error(const std::string& file_name)
 {
 	std::cout << "Error opening file " << file_name << "\n";
 	std::exit(1);
@@ -258,7 +274,7 @@ void develop_monoalphabetic_key(std::string & key)
 	rmv_dublicate_chars(key);// remove the duplicated characters
 }
 
-char encrypt(char c, std::string key)
+char encrypt(char c, const std::string& key)
 {
 	int key_index;
 
@@ -276,7 +292,7 @@ char encrypt(char c, std::string key)
 	return c;
 }
 
-char decrypt(char c, std::string key)
+char decrypt(char c, const std::string& key)
 {
 	const short NLETTER = 26;
 	std::string alphabet;
@@ -472,15 +488,12 @@ void encrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key)
 	std::string key_alphabet;
 	while (is.get(c))
 	{
-		std::cout << is.tellg() << "\n";
 		int key_index = is.tellg();
 		key_index = (key_index - 1)% key.size();
 		char ch = key[key_index];// The char to be the start of the key
 		//tellg gives 1 at the start
 
-		std::cout << "Char: " << ch << "\n";
 		key_alphabet = develop_Vigenere_key(toupper(ch));
-		std::cout << key_alphabet << "\n";
 		os.put(encrypt(c, key_alphabet));
 	}
 }
@@ -492,15 +505,12 @@ void decrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key)
 	std::string key_alphabet;
 	while (is.get(c))
 	{
-		std::cout << is.tellg() << "\n";
 		int key_index = is.tellg();
 		key_index = (key_index - 1)% key.size();
 		char ch = key[key_index];// The char to be the start of the key
 		//tellg gives 1 at the start
 
-		std::cout << "Char: " << ch << "\n";
 		key_alphabet = develop_Vigenere_key(toupper(ch));
-		std::cout << key_alphabet << "\n";
 		os.put(decrypt(c, key_alphabet));
 	}
 }
