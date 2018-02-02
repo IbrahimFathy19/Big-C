@@ -236,14 +236,14 @@ void develop_key_26_chars(std::string & key)
 char encrypt(char c, std::string key)
 {
 	rmv_duplicate_string(key);
-	int initial_key_size = key.size();
+	//int initial_key_size = key.size();
 
 	develop_key_26_chars(key);
 	std::string key_lower = key; // lower appended chars
 
 	//lower down the appended charcters
-	for (int i = initial_key_size, n = key.size(); i < n; i++)
-		key_lower[i] = tolower(key_lower[i]);
+	/*for (int i = initial_key_size, n = key.size(); i < n; i++)
+		key_lower[i] = tolower(key_lower[i]);*/
 
 	// Now we encrypt
 	int key_index;
@@ -256,7 +256,7 @@ char encrypt(char c, std::string key)
 	if (c >= 'a' && c <= 'z')
 	{
 		key_index = int(c) - 'a';
-		return key_lower[key_index];
+		return tolower(key[key_index]);
 	}
 	//else
 	return c;
