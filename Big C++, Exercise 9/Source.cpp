@@ -6,6 +6,8 @@
 #include <vector>
 
 
+
+
 /**
 	Prints the proper usage of the function (encrypt or decrypt)
 	@param program_name Program Name
@@ -89,7 +91,10 @@ void p1();
 void p2(int argc, char* argv[]);
 void p3();
 void p4(int argc, char* argv[]);
-void p5();
+void p5(int argc, char* argv[]);
+void develop_playfair_key(std::string& key);
+void encrypt_playfair(char & a, char & b, std::string key);
+void encrypt_file_playfair(std::istream & is, std::ostream & os, std::string & key);
 void p7();
 void p8();
 void p9();
@@ -108,7 +113,6 @@ int main(int argc, char* argv[])
 		<< "******\n";
 
 	std::string problem_name;
-
 	do
 	{
 		std::cout << "Enter the problem's code: ";
@@ -122,7 +126,7 @@ int main(int argc, char* argv[])
 		else if (problem_name == ("p4"))
 			p4(argc, argv);
 		else if (problem_name == ("p5"))
-			p5();
+			p5(argc, argv);
 		else if (problem_name == ("p7"))
 			p7();
 		else if (problem_name == ("p8"))
@@ -264,7 +268,7 @@ void develop_monoalphabetic_key(std::string & key)
 	rmv_dublicate_chars(key);
 
 	//to upper the letters of the key
-	for (int i = 0; i < NLETTER; i++)
+	for (int i = 0, n = key.size(); i < n; i++)
 		key[i] = toupper(key[i]);
 
 	//Append the alphabet chars to the KEY
@@ -515,9 +519,166 @@ void decrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key)
 	}
 }
 
-void p5()
+void p5(int argc, char* argv[])
 {
+	int nfile = 0;
+	std::ifstream infile;
+	std::ofstream outfile;
+	bool decrypt = false;
+	std::string key;
 
+	//input should be like this: crypt -d -kFEATHER encrypt.txt output.txt
+	if (argc > 5 || argc < 4)
+		usage(std::string(argv[0]));
+
+	for (int i = 1; i < argc; i++)
+	{
+		std::string arg = std::string(argv[i]);
+		if (arg.length() >= 2 && arg[0] == '-')
+			// It is a command line option
+		{
+			char option = arg[1];
+			if (option == 'd')
+				decrypt = true;
+			else if (option == 'k')
+				key = arg.substr(2);
+		}
+		else
+			//file
+		{
+			nfile++;
+			if (nfile == 1)
+			{
+				infile.open(arg.c_str());
+				if (infile.fail())
+					open_file_error(arg);
+			}
+			else if (nfile == 2)
+			{
+				outfile.open(arg.c_str());
+				if (outfile.fail())
+					open_file_error(arg);
+			}
+		}
+	}
+	if (key.empty() || nfile != 2)
+		usage(argv[0]);
+
+		encrypt_file_playfair(infile, outfile, key);
+
+	std::cout << "cryption is done! check output file\n";
+	infile.close();
+	outfile.close();
+}
+
+void develop_playfair_key(std::string& key)
+{
+	//to upper the letters of the key
+	for (int i = 0, n = key.size(); i < n; i++)
+		key[i] = toupper(key[i]);
+
+	const int NLETTER = 26;
+	for (int i = 0; i < NLETTER; i++)
+		key += static_cast<char> (i + 'A');
+
+	//remove character j
+	int i = 0;
+	while (i < key.size())
+	{
+		if (key[i] == 'J')
+			key[i] = 'I';//replace letter J with I
+		i++;
+	}
+	rmv_dublicate_chars(key);
+}
+
+void encrypt_playfair(char& a, char& b, std::string key)
+{
+	develop_playfair_key(key);
+	//make a 2D array to contain the key letters (25 letters)
+	const int ROW_SIZE = 5, COLUMN_SIZE = 5;
+	char key_letters[ROW_SIZE][COLUMN_SIZE];
+
+	//fill in the array
+	//and BTW find where the 2 chars are located in the array
+	int key_index = 0;
+	int a_row_index, a_column_index, b_row_index, b_column_index;
+	for (int i = 0; i < ROW_SIZE; i++)
+	{
+		for (int j = 0; j < COLUMN_SIZE; j++)
+		{
+			key_letters[i][j] = key[key_index];
+			key_index++;
+
+
+			if (key_letters[i][j] == toupper(a))
+			{
+				a_row_index = i;
+				a_column_index = j;
+			}
+			else if (key_letters[i][j] == toupper(b))
+			{
+				b_row_index = i;
+				b_column_index = j;
+			}
+		}
+	}
+
+	if (a_row_index == b_row_index
+		|| a_column_index == b_column_index)
+		//then they are in the same row or in the same column respectively
+		//we need to swap both values
+	{
+		char temp = a;
+		a = b;
+		b = temp;
+	}
+
+	else
+	{
+		//handle low case letters
+		if (a >= 'a' && a <= 'z')
+			a = tolower(key_letters[a_row_index][b_column_index]);
+		else
+			a = key_letters[a_row_index][b_column_index];
+
+		if (b >= 'a' && b <= 'z')
+			b = tolower(key_letters[b_row_index][a_column_index]);
+		else
+			b = key_letters[b_row_index][a_column_index];
+	}
+}
+
+void encrypt_file_playfair(std::istream& is, std::ostream& os, std::string& key)
+{
+	const int N_CHARS = 2;
+	char chars_to_encrpyt[N_CHARS];
+	char c;
+	int i = 0;
+	while (is.get(c))
+	{
+		chars_to_encrpyt[i] = c;
+		i++;
+		if (i == 2)//array is filled
+		{
+			encrypt_playfair(chars_to_encrpyt[0], chars_to_encrpyt[1], key);
+			os.put(chars_to_encrpyt[0]);
+			os.put(chars_to_encrpyt[1]);
+			i = 0;
+		}
+	}
+	if (i == 1)//half of the array is filled because number of characters is odd
+		//and the loop failed because eof has been reached
+		os.put(chars_to_encrpyt[0]);
+}
+
+void decrypt_file_playfair(std::istream& is, std::ostream& os, std::string& key)
+{
+	develop_monoalphabetic_key(key);
+
+	char c;
+	while (is.get(c))
+		os.put(decrypt(c, key));
 }
 
 void p6()
