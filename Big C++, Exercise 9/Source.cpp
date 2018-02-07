@@ -594,6 +594,17 @@ void develop_playfair_key(std::string& key)
 
 void encrypt_playfair(char& a, char& b, std::string key)
 {
+	//if the character is 'J'
+	if (a == 'J')
+		a = 'I';
+	else if (a == 'j')
+		a = 'i';
+
+	if (b == 'J')
+		b = 'I';
+	else if (b == 'j')
+		b = 'i';
+
 	develop_playfair_key(key);
 	//make a 2D array to contain the key letters (25 letters)
 	const int ROW_SIZE = 5, COLUMN_SIZE = 5;
@@ -611,12 +622,12 @@ void encrypt_playfair(char& a, char& b, std::string key)
 			key_index++;
 
 
-			if (key_letters[i][j] == toupper(a))
+			if (toupper(a) == key_letters[i][j])
 			{
 				a_row_index = i;
 				a_column_index = j;
 			}
-			else if (key_letters[i][j] == toupper(b))
+			if (toupper(b) == key_letters[i][j])
 			{
 				b_row_index = i;
 				b_column_index = j;
@@ -657,15 +668,20 @@ void encrypt_file_playfair(std::istream& is, std::ostream& os, std::string& key)
 	int i = 0;
 	while (is.get(c))
 	{
-		chars_to_encrpyt[i] = c;
-		i++;
-		if (i == 2)//array is filled
+		if (isalpha(c))
 		{
-			encrypt_playfair(chars_to_encrpyt[0], chars_to_encrpyt[1], key);
-			os.put(chars_to_encrpyt[0]);
-			os.put(chars_to_encrpyt[1]);
-			i = 0;
+			chars_to_encrpyt[i] = c;
+			i++;
+			if (i == 2)//array is filled
+			{
+				encrypt_playfair(chars_to_encrpyt[0], chars_to_encrpyt[1], key);
+				os.put(chars_to_encrpyt[0]);
+				os.put(chars_to_encrpyt[1]);
+				i = 0;
+			}
 		}
+		else
+			os.put(c);
 	}
 	if (i == 1)//half of the array is filled because number of characters is odd
 		//and the loop failed because eof has been reached
