@@ -44,146 +44,166 @@ void p15();
 
 
 /**
-Computes the value of an investment with compound interest.
-@param initial_balance the initial value of the investment
-@param p the interest rate per period in percent
-@param n the number of periods the investment is held
-@return the balance after n periods
+	Computes the value of an investment with compound interest.
+	@param initial_balance the initial value of the investment
+	@param p the interest rate per period in percent
+	@param n the number of periods the investment is held
+	@return the balance after n periods
 */
 double future_value(double p, double initial_balance, int n);
+
 /**
-Swaps the two variables a and b if a is greater than b and otherwise
-leaves a and b unchanged
-@param a is the controller vairable as if it was greater than b the function
-swaps them and it's called by reference
-@param b is the second vairable and it's called by reference
+	Swaps the two variables a and b if a is greater than b and otherwise
+	leaves a and b unchanged
+	@param a is the controller vairable as if it was greater than b the function
+	swaps them and it's called by reference
+	@param b is the second vairable and it's called by reference
 */
 void sort2(int& a, int& b);
+
 /**
-Rearrange the three integers using the procedure sort2()
-@param a is the first variable to be compared and it's called by reference
-@param b is the second vairable and it's called by reference
-@param c is the third variable to be compared
+	Rearrange the three integers using the procedure sort2()
+	@param a is the first variable to be compared and it's called by reference
+	@param b is the second vairable and it's called by reference
+	@param c is the third variable to be compared
 */
 void sort3(int& a, int& b, int& c);
+
 /**
-Turns a digit into its English name.
-@param n an integer between 1 and 9
-@return the name of n ("one" . . . "nine")
+	Turns a digit into its English name.
+	@param n an integer between 1 and 9
+	@return the name of n ("one" . . . "nine")
 */
 std::string digit_name(int n);
+
 /**
-Turns a number between 10 and 19 into its English name.
-@param n an integer between 10 and 19
-@return the name of n ("ten" . . . "nineteen")
+	Turns a number between 10 and 19 into its English name.
+	@param n an integer between 10 and 19
+	@return the name of n ("ten" . . . "nineteen")
 */
 std::string teen_name(int n);
+
 /**
-Gives the English name of a multiple of 10.
-@param n an integer between 2 and 9
-@return the name of 10 * n ("twenty" . . . "ninety")
+	Gives the English name of a multiple of 10.
+	@param n an integer between 2 and 9
+	@return the name of 10 * n ("twenty" . . . "ninety")
 */
 std::string tens_name(int n);
+
 /**
-Turns a number into its English name.
-@param n a positive integer < 10,000,000
-@return the name of n (e.g. "two hundred seventy four")
+	Turns a number into its English name.
+	@param n a positive integer < 10,000,000
+	@return the name of n (e.g. "two hundred seventy four")
 */
 std::string int_name(int n);
+
 /**
-Calculates the volume of a sphere of radius r
-@param r is the radius of the sphere
-@return the volume of that sphere
+	Calculates the volume of a sphere of radius r
+	@param r is the radius of the sphere
+	@return the volume of that sphere
 */
 double sphere_volume(double r);
+
 /**
-Calculates the surface area of a sphere of radius r
-@param r is the radius of the sphere
-@return the surface area of that sphere
+	Calculates the surface area of a sphere of radius r
+	@param r is the radius of the sphere
+	@return the surface area of that sphere
 */
 double sphere_surface(double r);
+
 /**
-Calculates the vloume of a cylinder
-@param r is the radius of the cylinder
-@param h is the height of the cylinder
-@return the volume of that cylinder
+	Calculates the vloume of a cylinder
+	@param r is the radius of the cylinder
+	@param h is the height of the cylinder
+	@return the volume of that cylinder
 */
 double cylinder_volume(double r, double h);
+
 /**
-Calculates the surface area of a cylinder
-@param r is the radius of the cylinder
-@param h is the height of the cylinder
-@return the surface area of that cylinder
+	Calculates the surface area of a cylinder
+	@param r is the radius of the cylinder
+	@param h is the height of the cylinder
+	@return the surface area of that cylinder
 */
 double cylinder_surface(double r, double h);
+
 /**
-Calculates the volume of a cone
-@param r is the radius of the cone
-@param h is the height of the cone
-@return the volume of that cone
+	Calculates the volume of a cone
+	@param r is the radius of the cone
+	@param h is the height of the cone
+	@return the volume of that cone
 */
 double cone_volume(double r, double h);
+
 /**
-Calculates the surface area of a cone
-@param r is the radius of the cone
-@param h is the height of the cone
-@return the surface area of that cone
+	Calculates the surface area of a cone
+	@param r is the radius of the cone
+	@param h is the height of the cone
+	@return the surface area of that cone
 */
 double cone_surface(double r, double h);
+
 /**
-Displays the prompt string, followed by a space, reads a floating-point number
-in, and returns it.
-@param prompt is the string that will be displayed to the user
-@return the double value
+	Displays the prompt string, followed by a space, reads a floating-point number
+	in, and returns it.
+	@param prompt is the string that will be displayed to the user
+	@return the double value
 */
 double get_double(const std::string& prompt);
+
 /**
-Check whether a year is a leap year or not
-@param year is the year to be tested
-@return true if the year is leap
+	Check whether a year is a leap year or not
+	@param year is the year to be tested
+	@return true if the year is leap
 */
 bool leap_year(int year);
+
 /**
-Asks for the problem name (e.g. p5) and then print the solution of that problem
+	Asks for the problem name (e.g. p5) and then print the solution of that problem
 */
 void print_solution();
+
 /**
-converts a date into a Julian day number.
-@param year is the year in the date that will be converted
-@param month is the month in the date that will be converted
-@param day is the day in the date that will be converted
-@return the julian day number
+	converts a date into a Julian day number.
+	@param year is the year in the date that will be converted
+	@param month is the month in the date that will be converted
+	@param day is the day in the date that will be converted
+	@return the julian day number
 */
 long julian(int year, int month, int day);
+
 /**
-performs the opposite conversion, from Julian day numbers to dates.
-@param jul is the julian day to be converted
-@param year is the year corresponding to that julian day
-@param month is the month corresponding to that julian day
-@param day is the day corresponding to that julian day
+	performs the opposite conversion, from Julian day numbers to dates.
+	@param jul is the julian day to be converted
+	@param year is the year corresponding to that julian day
+	@param month is the month corresponding to that julian day
+	@param day is the day corresponding to that julian day
 */
 void jul_to_date(long jul, int& year, int& month, int& day);
+
 /**
-Translates one digit, using the strings specified for the one, five, and
-ten values.
-@param n is the integer to be translated
-@param one is the least character value (e.g. for ones it's I)
-@param five is the middle character value (e.g. for ones it's V)
-@param ten is the most character value (e.g. for ones it's X)
-@return the translation of n
+	Translates one digit, using the strings specified for the one, five, and
+	ten values.
+	@param n is the integer to be translated
+	@param one is the least character value (e.g. for ones it's I)
+	@param five is the middle character value (e.g. for ones it's V)
+	@param ten is the most character value (e.g. for ones it's X)
+	@return the translation of n
 */
 std::string roman_digit(int n, std::string one, std::string five,
 	std::string ten);
+
 /**
-Yields the numeric value of each of the letters
-@param the Roman letter to be converted
-@return the numeric value of this letter
+	Yields the numeric value of each of the letters
+	@param the Roman letter to be converted
+	@return the numeric value of this letter
 */
 int convert_roman_letter(char letter);
+
 Employee read_employee();
 /**
-Encodes a five-digit zip code into bar code and print the result
-@parma zip_code is a string contains the zip code to be encoded
+	Encodes a five-digit zip code into bar code and print the result
+	@parma zip_code is a string contains the zip code to be encoded
 */
 
 

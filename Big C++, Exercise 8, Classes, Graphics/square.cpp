@@ -18,6 +18,7 @@ double Square::area() const
 		Message m(Point(-8, 8), "Not a square, try different points!");
 		cwin << m;
 	}
+	return 0;
 }
 
 void Square::plot() const
