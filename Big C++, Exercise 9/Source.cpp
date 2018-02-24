@@ -191,6 +191,7 @@ bool find_employee(std::iostream& database, int nrecord);
 */
 int sort_database(std::iostream& database, int nrecord);
 
+int newline_length(std::fstream& fs);
 void p1();
 void p2(int argc, char* argv[]);
 void p3();
@@ -1130,14 +1131,51 @@ int sort_database(std::iostream& database, int nrecord)
 
 void p10()
 {
+	// file code
+	std::string file_name = "p10_employee_data.txt", employee_name;
+	std::fstream database;
+	database.open(file_name);
+	if (database.fail())
+		open_file_error(file_name);
 
+	std::cout << "Newline length in p10_employee_data.txt is: " << newline_length(database)
+		<< "\n";
 
-
+	database.close();
 }
 
 int newline_length(std::fstream& fs)
 {
+	std::streampos get_pos = fs.tellg(); // Remember the current get position
 
+	fs.seekg(0, std::ios::beg); //Reset it to the beginning of the file
+	std::streampos get;
+
+	char ch;
+	while (fs.get(ch))
+	{
+		get = fs.tellg();
+		if (ch == '\n')
+		{
+			if (fs.get(ch))
+			{
+				std::streampos get2 = fs.tellg();
+
+				fs.seekg(get_pos, std::ios::beg);
+
+				if ((get2 - get) == 1)
+					return 1;
+
+				else if ((get2 - get) == 2)
+					return 2;
+			}
+			else
+				return 1;
+		}
+	}
+
+	fs.seekg(get_pos, std::ios::beg);
+	return 0;
 }
 
 void p11()
