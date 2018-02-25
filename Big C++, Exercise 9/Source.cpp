@@ -1169,8 +1169,6 @@ int newline_length(std::fstream& fs)
 				else if ((get2 - get) == 2)
 					return 2;
 			}
-			else
-				return 1;
 		}
 	}
 
