@@ -443,10 +443,10 @@ begin:
 	std::cout << value << " " << convert_from << " = " << result << " " << convert_to << "\n";
 }
 /**
-This function uses the stream cin to get a double number from the user with confirmation that
-the input is really a number
-@return the function return a number of type double which is the correct input
-to the stream cin
+	This function uses the stream cin to get a double number from the user with confirmation that
+	the input is really a number
+	@return the function return a number of type double which is the correct input
+	to the stream cin
 */
 double get_double()
 {
@@ -468,11 +468,11 @@ double get_double()
 	return input;
 }
 /**
-This function uses the stream cin to get a number of type integer from the user
-with confirmation that.
-the input is really a number
-@return the function return a number of type int which is the correct input
-to the stream cin.
+	This function uses the stream cin to get a number of type integer from the user
+	with confirmation that.
+	the input is really a number
+	@return the function return a number of type int which is the correct input
+	to the stream cin.
 */
 int get_int()
 {
