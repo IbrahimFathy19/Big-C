@@ -96,7 +96,7 @@ void decrypt_file_Vigenere(std::istream& is, std::ostream& os, std::string& key)
 
 /**
 	Create keyword for playfair using string "key" and remove duplicate letters from it.
-	Then you fill the keyword, and the remaining letters of the alphabet, into a 5 × 5 square.
+	Then you fill the keyword, and the remaining letters of the alphabet, into a 5 ï¿½ 5 square.
 	(Since there are only 25 squares, I and J are considered the same letter.)
 	
 	Here is such an arrangement with the keyword PLAYFAIR.
@@ -173,10 +173,10 @@ void write_employee(const Employee& e, std::ostream& out);
 /**
 	Searches input stream and find an employee record with a given name
 	Then it prompts the user to choose what happen
-	• Change the salary of this record
-	• View the next record
-	• Find another employee
-	• Quit
+	ï¿½ Change the salary of this record
+	ï¿½ View the next record
+	ï¿½ Find another employee
+	ï¿½ Quit
 	@param database Input/Output stream contains reocords of multiple employees
 	@param nrecord Number of records in database stream
 	@return true if record was found
@@ -895,9 +895,9 @@ void p7()
 {
 	std::string file_name = "p7_employee_data.txt";
 	std::fstream fs;
-	fs.open(file_name);
+	fs.open(file_name.c_str());
 	if (fs.fail())
-		open_file_error(file_name);
+		open_file_error(file_name.c_str());
 
 	fs.seekg(0, std::ios::end); // Go to end of file
 	int nrecord = fs.tellg() / RECORD_SIZE;
@@ -956,7 +956,7 @@ void p8()
 	std::string file_name = "p8_employee_data.txt", employee_name;
 
 	std::fstream database;
-	database.open(file_name);
+	database.open(file_name.c_str());
 	if (database.fail())
 		open_file_error(file_name);
 
@@ -978,7 +978,7 @@ bool find_employee(std::iostream& database, int nrecord)
 	std::cin.ignore();
 	getline(std::cin, employee_name);
 
-	employee_name.erase(std::remove_if(employee_name.begin(), employee_name.end(), isspace),
+	employee_name.erase(std::remove_if(employee_name.begin(), employee_name.end(), ::isspace),
 		employee_name.end()); // remove spaces from the string to compare correctly
 
 
@@ -991,7 +991,7 @@ bool find_employee(std::iostream& database, int nrecord)
 		database_empl_name = e.get_name();
 
 		database_empl_name.erase(std::remove_if(database_empl_name.begin(), database_empl_name.end(),
-			isspace),
+			::isspace),
 			database_empl_name.end()); // remove spaces from the string to compare correctly
 
 		if (database_empl_name == employee_name) // location found
@@ -1061,7 +1061,7 @@ void p9()
 	// file code
 	std::string file_name = "p9_employee_data.txt", employee_name;
 	std::fstream database;
-	database.open(file_name);
+	database.open(file_name.c_str());
 	if (database.fail())
 		open_file_error(file_name);
 	
@@ -1077,7 +1077,7 @@ void p9()
 	std::cin.ignore();
 	getline(std::cin, employee_name);
 
-	employee_name.erase(std::remove_if(employee_name.begin(), employee_name.end(), isspace),
+	employee_name.erase(std::remove_if(employee_name.begin(), employee_name.end(), ::isspace),
 		employee_name.end()); // remove spaces from the string to compare correctly
 
 	// find that employee in the file using binary search
@@ -1093,7 +1093,7 @@ void p9()
 		database_empl_name = e.get_name();
 
 		database_empl_name.erase(std::remove_if(database_empl_name.begin(), database_empl_name.end(),
-			isspace),
+			::isspace),
 			database_empl_name.end()); // remove spaces from the string to compare correctly
 
 		if (database_empl_name == employee_name) // location identified
@@ -1134,7 +1134,7 @@ void p10()
 	// file code
 	std::string file_name = "p10_employee_data.txt", employee_name;
 	std::fstream database;
-	database.open(file_name);
+	database.open(file_name.c_str());
 	if (database.fail())
 		open_file_error(file_name);
 
