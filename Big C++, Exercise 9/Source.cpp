@@ -1149,29 +1149,26 @@ int newline_length(std::fstream& fs)
 	std::streampos get_pos = fs.tellg(); // Remember the current get position
 
 	fs.seekg(0, std::ios::beg); //Reset it to the beginning of the file
-	std::streampos get;
+	std::streampos  get = fs.tellg();
+	std::streampos get2 = fs.tellg();
 
 	char ch;
+	std::streampos i = 0;
 	while (fs.get(ch))
 	{
 		get = fs.tellg();
 		if (ch == '\n')
 		{
-			if (fs.get(ch))
-			{
-				std::streampos get2 = fs.tellg();
+			fs.seekg(get_pos, std::ios::beg);
 
-				fs.seekg(get_pos, std::ios::beg);
+			if ((get - i) == 1)
+				return 1;
 
-				if ((get2 - get) == 1)
-					return 1;
-
-				else if ((get2 - get) == 2)
-					return 2;
-			}
+			else if ((get - i) == 2)
+				return 2;
 		}
+		i.operator+=(1);
 	}
-
 	fs.seekg(get_pos, std::ios::beg);
 	return 0;
 }
