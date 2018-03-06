@@ -1,10 +1,10 @@
-Johnson, Marianne               34416.84
-Sanchez, Linda                  28763.22
-Lee, John                       29765.00
-Baldassarian, George S.         23499.72
-Karamanlaki, Alexander          24964.38
-Schmidt, Otto                   26604.27
-Stroustrup, Bjarne             112979.22
-Keller, Chris                   21161.12
-Carter 3rd, Hodding             24168.54
-Techasaratoole, Shirley         23408.97
+Johnson, Marianne               85375.27
+Sanchez, Linda                  71350.77
+Lee, John                       73835.80
+Baldassarian, George S.         58293.99
+Karamanlaki, Alexander          61927.26
+Schmidt, Otto                   65995.21
+Stroustrup, Bjarne             280259.07
+Keller, Chris                   52492.81
+Carter 3rd, Hodding             59953.08
+Techasaratoole, Shirley         36869.13

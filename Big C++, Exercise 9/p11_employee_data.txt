@@ -1,0 +1,10 @@
+Johnson, Marianne               51625.26
+Sanchez, Linda                  43144.83
+Lee, John                       44647.50
+Baldassarian, George S.         35249.58
+Karamanlaki, Alexander          37446.57
+Schmidt, Otto                   39906.40
+Stroustrup, Bjarne             169468.83
+Keller, Chris                   31741.68
+Carter 3rd, Hodding             36252.81
+                                        

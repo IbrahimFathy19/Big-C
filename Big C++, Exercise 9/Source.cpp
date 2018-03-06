@@ -10,10 +10,7 @@
 #include <algorithm>
 
 
-
-
-
-
+// Functions declarations:
 
 /**
 	Prints the proper usage of the function (encrypt or decrypt)
@@ -177,11 +174,15 @@ void write_employee(const Employee& e, std::ostream& out);
 	� View the next record
 	� Find another employee
 	� Quit
+	@param employee_name Name of the Employee to search for
 	@param database Input/Output stream contains reocords of multiple employees
 	@param nrecord Number of records in database stream
+	@param e The empolyee found
+	@param record_location Position of the Employee's record in the database
 	@return true if record was found
 */
-bool find_employee(std::iostream& database, int nrecord);
+bool find_employee(std::string employee_name, std::iostream& database, int nrecord, Employee& e,
+	int& record_location);
 
 /**
 	Sorts a stream lines according to "string comparisons"
@@ -191,7 +192,35 @@ bool find_employee(std::iostream& database, int nrecord);
 */
 int sort_database(std::iostream& database, int nrecord);
 
+/**
+	Calculate newline length independentaly of operating system (UNIX or DOS)
+	@param fs File stream to check newline_length for
+	@return size of newline in the current OS
+	1: for UNIX
+	2: for Windows
+	0: If no /n exists in the stream
+*/
 int newline_length(std::fstream& fs);
+
+/**
+	Adds new Employee to the database stream
+	firstly, it searches for empty place filled with spaces, if it's found, it adds the record there
+	if not, it appens it to the end of the file
+	@param database Input/Output stream contains reocords of multiple employees
+	@param empl The employee to be added
+	@param nrecord Number of records in database stream
+*/
+void add_employee(std::iostream& database, const Employee& empl, int& nrecord);
+
+/**
+	Remove an  Employee from the database stream, and replace it with spaces
+	@param database Input/Output stream contains reocords of multiple employees
+	@param empl The employee to be added
+	@param nrecord Number of records in database stream
+	@return true if the record has been removed successfully
+*/
+bool remove_employee(std::iostream& database, Employee empl, int nrecord);
+
 void p1();
 void p2(int argc, char* argv[]);
 void p3();
@@ -203,7 +232,26 @@ void p8();
 void p9();
 void p10();
 void p11();
+void p12();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+std::fstream fs("newline_length.txt");
+int NEWLINE_LENGTH = newline_length(fs);
+const int RECORD_SIZE = 30 + 10 + NEWLINE_LENGTH;
 
 int main(int argc, char* argv[])
 {
@@ -242,7 +290,8 @@ int main(int argc, char* argv[])
 			p10();
 		else if (problem_name == ("p11"))
 			p11();
-
+		else if (problem_name == ("p12"))
+			p12();
 
 	} while (problem_name != ("Quit"));
 	std::cout << "Thanks\n";
@@ -888,9 +937,6 @@ int count_lines(std::istream& is)
 	return line_count;
 }
 
-const int NEWLINE_LENGTH = 2;
-const int RECORD_SIZE = 30 + 10 + NEWLINE_LENGTH;
-
 void p7()
 {
 	std::string file_name = "p7_employee_data.txt";
@@ -953,36 +999,92 @@ void write_employee(const Employee& e, std::ostream& out)
 
 void p8()
 {
+	//file code
 	std::string file_name = "p8_employee_data.txt", employee_name;
-
 	std::fstream database;
 	database.open(file_name.c_str());
 	if (database.fail())
 		open_file_error(file_name);
 
+	// calc Number of records
 	database.seekg(0, std::ios::end); // Go to end of file
 	int nrecord = database.tellg() / RECORD_SIZE;
 
-	bool found = find_employee(database, nrecord);
+Function:
+	std::cout << "Enter employee's name: ";
+	std::cin.ignore();
+	getline(std::cin, employee_name);
 
-	if (!found)
+	Employee e;
+	int record_location;
+	bool found = find_employee(employee_name, database, nrecord, e, record_location);
+	if (found)
+	{
+		std::cout << "Employee's info:\n\n"
+			<< "Name: " << e.get_name() << "\n"
+			<< "Salary: " << e.get_salary() << "\n\n"
+			<< "Choose what to do! (1 - 4)\n"
+			<< "1. Change the salary of this record\n"
+			<< "2. View the next record\n"
+			<< "3. Find another employee\n"
+			<< "4. Quit\n";
+
+
+		short choice;
+		do
+		{
+			std::cin >> choice;
+
+			switch (choice)
+			{
+			case 1: // Change the salary of this record
+			{
+				double salary_change;
+				std::cout << "Enter salary change percentage: ";
+				std::cin >> salary_change;
+
+				raise_salary(e, salary_change);
+				std::cout << "New salary: " << e.get_salary() << "\n";
+				database.seekp(record_location * RECORD_SIZE, std::ios::beg);
+				write_employee(e, database);
+				break;
+			}
+			case 2: // View the next record
+			{
+				record_location++;
+				database.seekg(record_location * RECORD_SIZE, std::ios::beg);
+				read_employee(e, database);
+
+				std::cout << "\nNext Record is:\nName: " << e.get_name() << "\n"
+					<< "Salary: " << e.get_salary() << "\n\n";
+				break;
+			}
+			case 3: //Find another employee
+			{
+				find_employee(employee_name, database, nrecord, e, record_location);
+				goto Function;
+				break;
+			}
+			case 4: // Quit
+			{
+				break;
+			}
+			default:
+				std::cout << "No such choice! Enter a value (1 - 4), Try again: ";
+			}
+		} while (record_location < nrecord && (choice < 1 && choice > 4));
+	}
+	else
 		std::cout << "No such employee exists!\n";
 	
 	database.close();
 }
 
-bool find_employee(std::iostream& database, int nrecord)
+bool find_employee(std::string employee_name, std::iostream& database, int nrecord, Employee& e, 
+	int& record_location)
 {
-	std::string employee_name;
-	std::cout << "Enter employee's name: ";
-	std::cin.ignore();
-	getline(std::cin, employee_name);
-
 	employee_name.erase(std::remove_if(employee_name.begin(), employee_name.end(), ::isspace),
 		employee_name.end()); // remove spaces from the string to compare correctly
-
-
-	Employee e;
 	std::string database_empl_name;
 	for (int i = 0; i < nrecord; i++)
 	{
@@ -996,60 +1098,7 @@ bool find_employee(std::iostream& database, int nrecord)
 
 		if (database_empl_name == employee_name) // location found
 		{
-			std::cout << "Employee's info:\n\n"
-				<< "Name: " << e.get_name() << "\n"
-				<< "Salary: " << e.get_salary() << "\n\n"
-				<< "Choose what to do! (1 - 4)\n"
-				<< "1. Change the salary of this record\n"
-				<< "2. View the next record\n"
-				<< "3. Find another employee\n"
-				<< "4. Quit\n";
-			
-
-			int record_location = i; 
-
-			short choice;
-			do
-			{
-				std::cin >> choice;
-				
-				switch (choice)
-				{
-				case 1: // Change the salary of this record
-				{
-					double salary_change;
-					std::cout << "Enter salary change percentage: ";
-					std::cin >> salary_change;
-
-					raise_salary(e, salary_change);
-					std::cout << "New salary: " << e.get_salary() << "\n";
-					database.seekp(record_location * RECORD_SIZE, std::ios::beg);
-					write_employee(e, database);
-					break;
-				}
-				case 2: // View the next record
-				{
-					record_location++;
-					database.seekg(record_location * RECORD_SIZE, std::ios::beg);
-					read_employee(e, database);
-
-					std::cout << "\nNext Record is:\nName: " << e.get_name() << "\n"
-						<< "Salary: " << e.get_salary() << "\n\n";
-					break;
-				}
-				case 3: //Find another employee
-				{
-					find_employee(database, nrecord);
-					break;
-				}
-				case 4: // Quit
-				{
-					break;
-				}
-				default:
-					std::cout << "No such choice! Enter a value (1 - 4), Try again: ";
-				}
-			} while (record_location < nrecord && (choice < 1 && choice > 4));
+			record_location = i;
 			return true;
 		}
 	}
@@ -1082,7 +1131,7 @@ void p9()
 
 	// find that employee in the file using binary search
 	Employee e;
-	int first = 0, last = nrecord, mid;
+	int first = 1, last = nrecord, mid;
 	std::string database_empl_name;
 
 	do
@@ -1096,15 +1145,18 @@ void p9()
 			::isspace),
 			database_empl_name.end()); // remove spaces from the string to compare correctly
 
-		if (database_empl_name == employee_name) // location identified
+		if (database_empl_name == employee_name) // location has been found
 		{
 			std::cout << "Employee's info:\n\n"
 				<< "Name: " << e.get_name() << "\n"
 				<< "Salary: " << e.get_salary() << "\n\n";
 		}
 
-		else
-			first++;
+		else if (database_empl_name < employee_name)
+			first = mid + 1;
+
+		else if (database_empl_name > employee_name)
+			last = mid - 1;
 
 	} while (database_empl_name != employee_name);
 	
@@ -1115,12 +1167,16 @@ int sort_database(std::iostream& database, int nrecord)
 {
 	Employee e;
 	std::vector<std::string> database_empl(nrecord);
+
+
 	for (int i = 0; i < nrecord; i++)
 	{
 		database.seekg(i * RECORD_SIZE, std::ios::beg);
 		getline(database, database_empl[i]);
 	}
+	
 	std::sort(database_empl.begin(), database_empl.end());
+	
 	for (int i = 0; i < nrecord; i++)
 	{
 		database.seekp(i * RECORD_SIZE, std::ios::beg);
@@ -1162,18 +1218,158 @@ int newline_length(std::fstream& fs)
 			fs.seekg(get_pos, std::ios::beg);
 
 			if ((get - i) == 1)
-				return 1;
+				return 1; // or simply return (get - i), but this is more simple
 
 			else if ((get - i) == 2)
 				return 2;
 		}
 		i.operator+=(1);
 	}
+	fs.clear();
 	fs.seekg(get_pos, std::ios::beg);
 	return 0;
 }
 
 void p11()
 {
+	// file code
+	std::string file_name = "p11_employee_data.txt";
+	std::fstream database;
+	database.open(file_name.c_str());
+	if (database.fail())
+		open_file_error(file_name);
 
+	// calculate Record Size
+	//int record_size = 30 + 10 + newline_length(database);
+
+	// calculate number of records
+	database.seekg(0, std::ios::end); // Go to end of file
+	int nrecord = database.tellg() / RECORD_SIZE;
+
+	
+	int choice;
+	std::cout << "Choose what to do!\n"
+		 "1. Add Employee\n"
+		 "2. Remove Employee\n";
+	std::cin >> choice;
+
+	// First we need Empolyee's data
+	std::string empl_name;
+	double salary;
+	std::cout << "Enter Employee's name: ";
+	std::cin.ignore();
+	getline(std::cin, empl_name);
+	std::cout << "Enter Employee's salary: ";
+	std::cin >> salary;
+
+
+	Employee e(empl_name, salary);
+
+	if (choice == 1) //Add Employee
+	{
+		add_employee(database, e, nrecord);
+		std::cout << "Employee has been added. Check the database!\n";
+	}
+	else if (choice == 2) // Remove Employee
+	{
+		bool removed = remove_employee(database, e, nrecord);
+		if (removed)
+			std::cout << "Employee has been removed. Check the database!\n";
+		else
+			std::cout << "Employee hasn't been removed. Check if it exists!\n";
+	}
+	database.close();
+}
+
+void add_employee(std::iostream& database, const Employee& empl, int& nrecord)
+{
+	std::string empl_data;
+	bool space_found = false;
+	for (int i = 0; i < nrecord; i++)
+	{
+		database.seekg(i * RECORD_SIZE, std::ios::beg);
+		getline(database, empl_data);
+		empl_data.erase(std::remove_if(empl_data.begin(), empl_data.end(), ::isspace),
+			empl_data.end()); // remove spaces from the string
+
+		if (empl_data.empty())
+		{
+			database.seekp(i * RECORD_SIZE, std::ios::beg);
+			space_found = true;
+			break;
+		}
+
+	}
+	if (!space_found)
+		database.seekp((nrecord - 1) * RECORD_SIZE, std::ios::beg); // append it to eof
+
+
+	write_employee(empl, database);
+
+	nrecord++;
+}
+
+bool remove_employee(std::iostream& database, Employee empl, int nrecord)
+{
+	int record_location;
+	bool found = find_employee(empl.get_name(), database, nrecord, empl,
+		record_location);
+	if (found)
+	{
+		database.seekp(record_location*RECORD_SIZE, std::ios::beg);
+		database << std::setw(RECORD_SIZE - NEWLINE_LENGTH) << " ";
+		database << "\n";
+		return true;
+	}
+	return false;
+}
+
+void p12()
+{
+	std::ifstream names_tele("p12_names_telephone.txt"),
+		names_security_numbers("p12_names_security-numbers.txt"),
+		security_numbers_salaries("p12_security-numbers_annual-salaries.txt");
+	if (names_tele.fail())
+		open_file_error("p12_names_telephone.txt");
+	else if (names_security_numbers.fail())
+		open_file_error("p12_names_security-numbers.txt");
+	else if (security_numbers_salaries.fail())
+		open_file_error("p12_security-numbers_annual-salaries.txt");
+
+	const int RECORD_SIZE1 = 30 + 13 + NEWLINE_LENGTH; // names and telephones
+	const int RECORD_SIZE2 = 30 + 10 + NEWLINE_LENGTH; // names and social security numbers
+	const int RECORD_SIZE3 = 10 + 10 + NEWLINE_LENGTH; // social security numbers and annual salaries
+
+	double user_teleohone;
+	std::cout << "Enter a telephone number: ";
+	std::cin >> user_teleohone;
+
+	// calculate number of records
+	names_tele.seekg(0, std::ios::end); // Go to end of file
+	int nrecord_database1 = names_tele.tellg() / RECORD_SIZE1; // nrecords of NAMES & TELEPHONE NUMBERS DATABASE
+
+	double database_user_teleohone, security_number, annual_salary;
+	std::string database_record, user_name;
+	for (int i = 0; i < nrecord_database1; i++)
+	{
+		names_tele.seekg(i * RECORD_SIZE1, std::ios::beg);
+		getline(names_tele, database_record);
+		database_user_teleohone = string_to_double(database_record.substr(30, 13));
+		if (database_user_teleohone == user_teleohone)
+			user_name = database_record.substr(0, 30);
+		else
+			std::cout << "No such telephone number was found\n";
+	}
+	names_tele.seekg(0, std::ios::end); // Go to end of file
+	int nrecord_database2 = names_tele.tellg() / RECORD_SIZE2; /** nrecords of NAMES & SOCIAL SECURITY
+															   DATABASE*/
+	std::string data_base_name;
+	for (int i = 0; i < nrecord_database2; i++)
+	{
+		names_security_numbers.seekg(i * RECORD_SIZE2, std::ios::beg);
+		getline(names_security_numbers, database_record);
+	}
+	names_tele.close();
+	names_security_numbers.close();
+	security_numbers_salaries.close();
 }
