@@ -7,4 +7,3 @@ Schmidt, Otto                   39906.40
 Stroustrup, Bjarne             169468.83
 Keller, Chris                   31741.68
 Carter 3rd, Hodding             36252.81
-                                        

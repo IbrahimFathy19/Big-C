@@ -8,7 +8,7 @@
 #include "ccc_empl.h"
 #include <iomanip>
 #include <algorithm>
-
+#include "student.h"
 
 // Functions declarations:
 
@@ -147,6 +147,22 @@ int count_lines(std::istream& is);
 double string_to_double(std::string s);
 
 /**
+	Converts a string to a long long value, e.g.
+	"5500000000000" -> 5500000000000.
+	@param s a string representing a long long value
+	@return the equivalent long integer value
+*/
+long long string_to_long_long(std::string s);
+
+/**
+	Converts a string to a long floating-point value, e.g.
+	"321020024230512.14" -> 321020024230512.14.
+	@param s a string representing a long floating-point value
+	@return the equivalent long floating-point value
+*/
+long double string_to_long_double(std::string s);
+
+/**
 	Raises an employee salary.
 	@param e employee receiving raise
 	@param percent the percentage of the raise
@@ -221,6 +237,8 @@ void add_employee(std::iostream& database, const Employee& empl, int& nrecord);
 */
 bool remove_employee(std::iostream& database, Employee empl, int nrecord);
 
+bool find_account(std::istream& database, size_t n_record, size_t record_size, long long acc_number, int& record_location);
+
 void p1();
 void p2(int argc, char* argv[]);
 void p3();
@@ -233,6 +251,14 @@ void p9();
 void p10();
 void p11();
 void p12();
+void p13();
+void p14();
+void p15(int argc, char* argv[]);
+void p16(int argc, char* argv[]);
+void p17(int argc, char* argv[]);
+void p18();
+void p19();
+void p20();
 
 
 
@@ -292,6 +318,22 @@ int main(int argc, char* argv[])
 			p11();
 		else if (problem_name == ("p12"))
 			p12();
+		else if (problem_name == ("p13"))
+			p13();
+		else if (problem_name == ("p14"))
+			p14();
+		else if (problem_name == ("p15"))
+			p15(argc, argv);
+		else if (problem_name == ("p16"))
+			p16(argc, argv);
+		else if (problem_name == ("p17"))
+			p17(argc, argv);
+		else if (problem_name == ("p18"))
+			p18();
+		else if (problem_name == ("p19"))
+			p19();
+		else if (problem_name == ("p20"))
+			p20();
 
 	} while (problem_name != ("Quit"));
 	std::cout << "Thanks\n";
@@ -973,6 +1015,22 @@ double string_to_double(std::string s)
 	return x;
 }
 
+long long string_to_long_long(std::string s)
+{
+	std::istringstream instr(s);
+	long long x;
+	instr >> x;
+	return x;
+}
+
+long double string_to_long_double(std::string s)
+{
+	std::istringstream instr(s);
+	long double x;
+	instr >> x;
+	return x;
+}
+
 void raise_salary(Employee& e, double percent)
 {
 	double new_salary = e.get_salary() * (1 + percent / 100);
@@ -1344,11 +1402,11 @@ void p12()
 	std::cout << "Enter a telephone number: ";
 	std::cin >> user_teleohone;
 
-	// calculate number of records
+	// calculate number of records in NAMES & TELEPHONE NUMBERS DATABASE
 	names_tele.seekg(0, std::ios::end); // Go to end of file
 	int nrecord_database1 = names_tele.tellg() / RECORD_SIZE1; // nrecords of NAMES & TELEPHONE NUMBERS DATABASE
 
-	double database_user_teleohone, security_number, annual_salary;
+	double database_user_teleohone, security_number = -1, annual_salary = -1;
 	std::string database_record, user_name;
 	for (int i = 0; i < nrecord_database1; i++)
 	{
@@ -1357,19 +1415,400 @@ void p12()
 		database_user_teleohone = string_to_double(database_record.substr(30, 13));
 		if (database_user_teleohone == user_teleohone)
 			user_name = database_record.substr(0, 30);
-		else
-			std::cout << "No such telephone number was found\n";
 	}
-	names_tele.seekg(0, std::ios::end); // Go to end of file
-	int nrecord_database2 = names_tele.tellg() / RECORD_SIZE2; /** nrecords of NAMES & SOCIAL SECURITY
+
+
+	names_security_numbers.seekg(0, std::ios::end); // Go to end of file
+	int nrecord_database2 = names_security_numbers.tellg() / RECORD_SIZE2; /** nrecords of NAMES & SOCIAL SECURITY
 															   DATABASE*/
-	std::string data_base_name;
+	std::string database_user_name;
 	for (int i = 0; i < nrecord_database2; i++)
 	{
 		names_security_numbers.seekg(i * RECORD_SIZE2, std::ios::beg);
 		getline(names_security_numbers, database_record);
+		database_user_name = database_record.substr(0, 30);
+		if (database_user_name == user_name)
+			security_number = string_to_double(database_record.substr(30, 10));
 	}
+
+
+	names_security_numbers.seekg(0, std::ios::end); // Go to end of file
+	int nrecord_database3 = names_security_numbers.tellg() / RECORD_SIZE2; /** nrecords of SOCIAL SECURITY & ANNUAL
+																		   SALARIES DATABASE*/
+	double database_user_sec_number;
+	for (int i = 0; i < nrecord_database3; i++)
+	{
+		security_numbers_salaries.seekg(i * RECORD_SIZE3, std::ios::beg);
+		getline(security_numbers_salaries, database_record);
+		database_user_sec_number = string_to_double(database_record.substr(0, 10));
+		if (database_user_sec_number == security_number)
+			annual_salary = string_to_double(database_record.substr(10, 10));
+	}
+
+	std::cout << "Username: " << user_name << "\n"
+		<< "Social Security Number: " << std::fixed << std::setprecision(0) << security_number << "\n"
+		<< "Annual Salary: " << std::fixed << std::setprecision(2) << annual_salary << "\n";
+
 	names_tele.close();
 	names_security_numbers.close();
 	security_numbers_salaries.close();
+}
+
+void p13()
+{
+	std::ifstream classes("p13_classes.txt");
+	if (classes.fail())
+		open_file_error("p13_classes.txt");
+
+	// calculate how many class exists and get the name of the class
+	std::vector<std::string> class_name;
+	std::string c;
+	while (getline(classes, c))
+		class_name.push_back(c);
+	
+	int class_count = class_name.size();
+	double id;
+	std::string database_line, value;
+	std::vector<Student> students;
+	for (size_t i = 0; i < class_count; i++)
+	{
+		// open file of each class
+		std::string class_file_name = "p13_" + class_name[i] + ".txt";
+		std::ifstream class_file_data(class_file_name.c_str());
+		if (class_file_data.fail())
+			open_file_error(class_file_name);
+		
+		const int record_size = 6 + 2 + NEWLINE_LENGTH; // class_file database: ID and Value (e.g A+)
+		
+		// calculate number of Students
+		class_file_data.seekg(0, std::ios::end); // Go to end of file
+		int nstudent = class_file_data.tellg() / record_size; // nrecords of NAMES & TELEPHONE NUMBERS DATABASE
+		
+		students.resize(nstudent);
+		for (size_t j = 0; j < nstudent; j++)
+		{
+			class_file_data.seekg(j * record_size, std::ios::beg);
+			getline(class_file_data, database_line);
+			id = string_to_double(database_line.substr(0, 6));
+			value = database_line.substr(6, 2);
+			if (i == 0)//the first file only
+				students[j] = Student(id);
+			students[j].add_class_value(class_name[i], value);
+		}
+		class_file_data.close();
+	}
+	for (size_t i = 0, n = students.size(); i < n; i++)
+	{
+		students[i].print_student();
+		std::cout << "******\n";
+	}
+
+}
+
+void p14()
+{
+	std::fstream bank_database("p14_bank.txt");
+	if (bank_database.fail())
+		open_file_error("p14_bank.txt");
+
+	const size_t ACCOUNT_NUMBER_SIZE = 20, BALANCE_SIZE = 20;
+	const size_t RECORD_SIZE = ACCOUNT_NUMBER_SIZE + BALANCE_SIZE + NEWLINE_LENGTH; //19 for the account number, 1 for space, 20 for balance
+
+	// calculate number of accounts
+	bank_database.seekg(0, std::ios::end); // Go to end of file
+	size_t n_accounts= bank_database.tellg() / RECORD_SIZE; // Number of accounts in the database
+
+	long long acc_number;
+	unsigned short choice;
+	do
+	{
+		std::cout << "Enter your account number or q to quit: ";
+		std::cin >> acc_number;
+		if (!std::cin.fail()) 
+		{
+			int rec_loc;
+			bool acc_exist = find_account(bank_database, n_accounts, RECORD_SIZE, acc_number, rec_loc);
+
+			if (acc_exist)
+			{
+
+				//get the balance of this account
+				std::string database_line;
+				bank_database.seekg(rec_loc * RECORD_SIZE, std::ios::beg);
+				getline(bank_database, database_line);
+				long double acc_balance = string_to_long_double(database_line.substr(ACCOUNT_NUMBER_SIZE - 1, BALANCE_SIZE));
+
+				std::cout << "1. Deposite money\n"
+					<< "2. Withdraw money\n"
+					<< "3. Query the account balance\n"
+					<< "4. Transfer money from one account to another\n"
+					<< "5. Quit"
+					<< "Choose what to do (1-5): ";
+				std::cin >> choice;
+
+				long double new_balance;
+				switch (choice)
+				{
+				case 1:
+				{
+					std::cout << "Enter the amount of money to be deposited: ";
+					long double deposit;
+					std::cin >> deposit;
+
+					new_balance = acc_balance + deposit;
+					bank_database.seekp(rec_loc * RECORD_SIZE + ACCOUNT_NUMBER_SIZE, std::ios::beg);
+					bank_database << std::fixed << std::setprecision(2) << std::setw(20) << new_balance;
+					std::cout << "Done Depositing...\n";
+					break;
+				}
+				case 2:
+				{
+					std::cout << "Enter the amount of money to be withdrawn: ";
+					long double withdraw;
+					std::cin >> withdraw;
+
+					new_balance = acc_balance - withdraw;
+					bank_database.seekp(rec_loc * RECORD_SIZE + 20, std::ios::beg);
+					bank_database << std::fixed << std::setprecision(2) << std::setw(20) << new_balance;
+					std::cout << "Done Withdrawing...\n";
+					break;
+				}
+				case 3:
+				{
+					std::string account_data;
+					bank_database >> acc_number >> acc_balance;
+					std::cout << "Balance: " << acc_balance << "\n";
+				}
+				case 4:
+				{
+					std::cout << "Enter the other Account_number to transfer to: "
+						<< "Money to transfer: ";
+					std::cin >> acc_number;
+
+					int transfered_toAccount_recLocation;
+					if (find_account(bank_database, n_accounts, RECORD_SIZE, acc_number,
+						transfered_toAccount_recLocation))
+					{
+						std::cout << "Enter the amount of money to be transfered: ";
+						long double transfered_money;
+						std::cin >> transfered_money;
+						if (acc_balance > transfered_money)
+						{
+							/*update the balance of the current account (the account that the money
+							will be transfered from)*/
+							new_balance = acc_balance - transfered_money;
+							bank_database.seekp(rec_loc * RECORD_SIZE + 20, std::ios::beg);
+							bank_database << std::fixed << std::setprecision(2) << std::setw(20) << new_balance;
+
+							/*update the balance of the next account (the account that the money
+							will be transfered to)*/
+							new_balance = acc_balance + transfered_money;
+							bank_database.seekp(transfered_toAccount_recLocation * RECORD_SIZE +
+								ACCOUNT_NUMBER_SIZE, std::ios::beg);
+							bank_database << std::fixed << std::setprecision(2) << std::setw(20) << new_balance;
+							std::cout << "Done Transferring...\n";
+						}
+						else
+						{
+							std::cout << "The current account does not have the required amount of money"
+								" to be transfered\n";
+							exit(0);
+						}
+					}
+					else
+					{
+						std::cout << "Account doesn't exist\n";
+						exit(0);
+					}
+				}
+				default:
+					break;
+				}
+			}
+			else
+			{
+				std::cout << "Account doesn't exist\n";
+				exit(0);
+			}
+		}
+		else
+		{
+			std::cin.clear();
+			std::cin.ignore();
+			break;
+		}
+	} while (choice != 5);
+
+	bank_database.close();
+}
+
+bool find_account(std::istream& database, size_t n_record, size_t record_size, long long acc_number, int& record_location)
+{
+	// search for this account
+	std::string account_data;
+	long long database_acc_number;
+	for (size_t i = 0; i < n_record; i++)
+	{
+		database.seekg(i * record_size, std::ios::beg);
+		database >> database_acc_number;
+
+		if (acc_number == database_acc_number) // acc found
+		{
+			record_location = i;
+			return true;
+		}
+	}
+	return false;
+}
+
+void p15(int argc, char* argv[])
+{
+	std::ifstream copy_from;
+	std::ofstream copy_to;
+
+	if (argc < 3 || argc > 3)
+	{
+		std::cout << "Usage: \n" << std::string(argv[0]) // programe name
+			<< " input.txt output.txt\n\n";
+		std::exit(1);
+	}
+
+	copy_from.open(argv[1]);
+	if (copy_from.fail())
+		open_file_error(std::string(argv[1]));
+
+	copy_to.open(argv[2]);
+	if (copy_to.fail())
+		open_file_error(std::string(argv[2]));
+
+	char c;
+	while (copy_from.get(c))
+		copy_to.put(c);
+
+	std::cout << "Done\n";
+	
+	copy_from.close();
+	copy_to.close();
+}
+
+void p16(int argc, char* argv[])
+{
+	std::ifstream copy_from;
+	std::ofstream copy_to;
+
+	if (argc < 3)
+	{
+		std::cout << "Usage: \n" << std::string(argv[0]) // programe name
+			<< " input.txt output.txt\n\n";
+		std::exit(1);
+	}
+
+	copy_to.open(argv[argc - 1]);
+	if (copy_to.fail())
+		open_file_error(std::string(argv[argc - 1]));
+
+	for (int i = 1; i < argc - 1; i++) 
+	{
+		copy_from.open(argv[i]);
+		if (copy_from.fail())
+			open_file_error(std::string(argv[i]));
+
+		char c;
+		while (copy_from.get(c))
+			copy_to.put(c);
+
+		copy_from.close();
+	}
+	copy_to.close();
+
+	std::cout << "Done\n";
+}
+
+void p17(int argc, char* argv[])
+{
+	if (argc < 3) // minimum number of arguments
+	{
+		std::cout << "Usage: \n" << std::string(argv[0]) // programe name
+			<< " Keyword input.txt input.txt ...\n\n";
+		std::exit(1);
+	}
+
+	std::string keyword = std::string(argv[1]);
+
+	std::ifstream input;
+	for (int i = 2; i < argc; i++)
+	{
+		input.open(argv[i]);
+		std::string arg = std::string(argv[i]);
+		if (input.fail())
+			open_file_error(arg);
+	
+		std::string line;
+		int line_count = 0;
+		while (getline(input, line))
+			if (line.find(keyword) != -1)
+				std::cout << arg << ": " << line << "\n";
+		input.close();
+	}
+
+}
+
+void p18()
+{
+	std::ifstream words("p18_words.txt");
+	std::ifstream file_to_check("p18_fileToCheck.txt");
+
+	if (words.fail())
+		open_file_error("p18_words.txt");
+	
+	if (file_to_check.fail())
+		open_file_error("p18_fileToCheck.txt");
+
+	std::string single_word, word_search;
+	while (file_to_check >> single_word)
+	{
+		bool found = false;
+		while (words >> word_search)
+		{
+			if (word_search == single_word)
+			{
+				found = true;
+				break;
+			}
+		}
+		words.clear();
+		words.seekg(0, std::ios::beg);
+		if (!found)
+			std::cout << single_word << " was not found\n";
+	}
+
+	words.close();
+	file_to_check.close();
+}
+
+void p19()
+{
+	std::ifstream input("p19_input.txt");
+	std::ofstream output("p19_output.txt");
+	
+	if (input.fail())
+		open_file_error("p19_input.txt");
+
+	if (output.fail())
+		open_file_error("p19_output.txt");
+
+	std::string line;
+	while (getline(input, line))
+	{
+		std::reverse(line.begin(), line.end());
+		output << line << "\n";
+	}
+	std::cout << "Reversing is done, check output file\n";
+	input.close();
+	output.close();
+}
+
+void p20()
+{
+
 }
