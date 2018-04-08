@@ -185,11 +185,6 @@ void write_employee(const Employee& e, std::ostream& out);
 
 /**
 	Searches input stream and find an employee record with a given name
-	Then it prompts the user to choose what happen
-	� Change the salary of this record
-	� View the next record
-	� Find another employee
-	� Quit
 	@param employee_name Name of the Employee to search for
 	@param database Input/Output stream contains reocords of multiple employees
 	@param nrecord Number of records in database stream
@@ -237,6 +232,15 @@ void add_employee(std::iostream& database, const Employee& empl, int& nrecord);
 */
 bool remove_employee(std::iostream& database, Employee empl, int nrecord);
 
+/**
+	Searches input stream and find an account record with a given number
+	@param database Input / Output stream contains reocords of multiple accounts
+	@param nrecord Number of records in database stream
+	@param record_size Size of each record
+	@param Account number Number of the account to search for
+	@param record_location Position of the account's record in the database
+	@return true if record was found
+*/
 bool find_account(std::istream& database, size_t n_record, size_t record_size, long long acc_number, int& record_location);
 
 void p1();
