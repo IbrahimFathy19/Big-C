@@ -23,7 +23,7 @@ void P5();
 int main()
 {
 	std::string problem_name;
-	std::cout << "Write the code of the problem to show the solution of it: \n"
+	std::cout << "Write the letter \"p\" or \"r\" followed by the problem numberto show the solution: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl
 		<< "Contents: r16, r18, p1, p2, p3, p4, p5" << std::endl

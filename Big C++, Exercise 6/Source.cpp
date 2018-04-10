@@ -147,7 +147,7 @@ int sum_vector_int(const std::vector<int> & vec);
 int main()
 {
 	std::string problem_name = "Hello";
-	std::cout << "Write the code of the problem to show the solution of it: \n"
+	std::cout << "Write the letter \"p\" followed by the problem numberto show the solution: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl
 		<< "Contents: p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11," << std::endl

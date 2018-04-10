@@ -285,7 +285,7 @@ const int RECORD_SIZE = 30 + 10 + NEWLINE_LENGTH;
 
 int main(int argc, char* argv[])
 {
-	std::cout << "Write the code of the problem to show the solution of it: \n"
+	std::cout << "Write the letter \"p\" followed by the problem numberto show the solution: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
 

@@ -13,61 +13,61 @@ void p23();
 
 
 /**
-Calculates the perimeter of a circle c
-@param c the circle whose perimeter will be calculated
-@return the value of perimeter
+	Calculates the perimeter of a circle c
+	@param c the circle whose perimeter will be calculated
+	@return the value of perimeter
 */
 double perimeter(const Circle& c);
 /**
-Calculates the area of a circle c
-@param c the circle whose area will be calculated
-@return the value of area
+	Calculates the area of a circle c
+	@param c the circle whose area will be calculated
+	@return the value of area
 */
 double area(const Circle& c);
 /**
-Computes the distance between two points
-@param p is the first point
-@param q is the second point
-@return the distance between them
+	Computes the distance between two points
+	@param p is the first point
+	@param q is the second point
+	@return the distance between them
 */
 double distance(const Point& p, const Point& q);
 /**
-tests if a point p is inside a circle
-@param p the point to be tested if it's inside the circle or not
-@param c the circle in which we make our test
-@return true if p is inside c
+	tests if a point p is inside a circle
+	@param p the point to be tested if it's inside the circle or not
+	@param c the circle in which we make our test
+	@return true if p is inside c
 */
 bool is_inside(const Point & p, const Circle & c);
 /**
-Draws the letter H in a square 1 * 1
-@param p the top left corner of the letter
+	Draws the letter H in a square 1 * 1
+	@param p the top left corner of the letter
 */
 void display_H(const Point& p);
 /**
-Draws the letter E in a square 1 * 1
-@param p the top left corner of the letter
+	Draws the letter E in a square 1 * 1
+	@param p the top left corner of the letter
 */
 void display_E(const Point& p);
 /**
-Draws the letter L in a square 1 * 1
-@param p the top left corner of the letter
+	Draws the letter L in a square 1 * 1
+	@param p the top left corner of the letter
 */
 void display_L(const Point& p);
 /**
-Draws the letter O in a square 1 * 1
-@param p the top left corner of the letter
+	Draws the letter O in a square 1 * 1
+	@param p the top left corner of the letter
 */
 void display_O(const Point& p);
 /**
-Rotates a point for a specific angle
-@param p the point to be rotated
-@param angle the amount of angle the point p will be rotated with (in radian)
+	Rotates a point for a specific angle
+	@param p the point to be rotated
+	@param angle the amount of angle the point p will be rotated with (in radian)
 */
 void rotate(Point& p, double angle);
 /**
-Scales a point with a given scale factor
-@param p the point to be scaled
-@param scale is the scale factor
+	Scales a point with a given scale factor
+	@param p the point to be scaled
+	@param scale is the scale factor
 */
 void scale(Point& p, double scale);
 
