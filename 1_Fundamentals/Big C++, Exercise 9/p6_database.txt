@@ -1,0 +1,3 @@
+Mr.|Harry|Hacker|1105 Torre Ave.|Cupertino|CA|95014
+Dr.|John|Lee|702 Ninth Street Apt. 4|San Jose|CA|95109
+Miss|Evelyn|Garcia|1101 S. University Place|Ann Arbor|MI|48105

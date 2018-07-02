@@ -1,3 +1,0 @@
-Numbers and objetcts:
-int d;
-std::string x = "sdada";
