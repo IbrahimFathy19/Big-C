@@ -1,3 +1,10 @@
+/*****************************************************************************************************
+***********************************Big C++, Exercise**************************************************
+******************************Ibrahim Fathy Abd Elmageed**********************************************
+*************The problems are divided into functions, each function indicates the name****************
+*************of the problem, for example function p1 stands for problem 1****************************/
+
+
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -285,7 +292,7 @@ const int RECORD_SIZE = 30 + 10 + NEWLINE_LENGTH;
 
 int main(int argc, char* argv[])
 {
-	std::cout << "Write the letter \"p\" followed by the problem numberto show the solution: \n"
+	std::cout << "Write the letter \"p\" followed by the problem number to show the solution: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
 

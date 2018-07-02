@@ -1,3 +1,10 @@
+/*****************************************************************************************************
+***********************************Big C++, Exercise**************************************************
+******************************Ibrahim Fathy Abd Elmageed**********************************************
+*************The problems are divided into functions, each function indicates the name****************
+*************of the problem, for example function p1 stands for problem 1****************************/
+
+
 #include "ccc_win.h"
 #include <cmath>
 #define PI 3.141592654

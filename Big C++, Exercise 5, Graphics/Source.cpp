@@ -1,3 +1,10 @@
+/*****************************************************************************************************
+***********************************Big C++, Exercise**************************************************
+******************************Ibrahim Fathy Abd Elmageed**********************************************
+*************The problems are divided into functions, each function indicates the name****************
+*************of the problem, for example function p1 stands for problem 1****************************/
+
+
 #include <iostream>
 #include "rectangle.h"
 #include "triangle.h"

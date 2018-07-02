@@ -5,6 +5,8 @@
    A class that describes a time of day
    (between 00:00:00 and 23:59:59)
 */
+#include <iostream>
+
 class Time
 {
 public:
@@ -48,6 +50,21 @@ public:
       @param s the number of seconds to add
    */
    void add_seconds(int s);
+
+	/**
+		Test whether the implicit object time comes before the given time t
+		@param t Time to test with
+		@return true if *this comes before t
+	*/
+	bool operator<(const Time& t) const;
+	/**
+		Test whether the implicit object time comes after the given time t
+		@param t Time to test with
+		@return true if *this comes after t
+	*/
+	bool operator>(const Time& t) const;
+
+	friend std::ostream& operator<<(std::ostream& stream, const Time& t);
 
 private:
    int time_in_secs;

@@ -1,6 +1,8 @@
-//Big C++, Exercise 1
-/*The problems is divided into functions, each function indicates the name
-of the problem, for example function p1 stands for problem 1*/
+/*****************************************************************************************************
+***********************************Big C++, Exercise**************************************************
+******************************Ibrahim Fathy Abd Elmageed**********************************************
+*************The problems are divided into functions, each function indicates the name****************
+*************of the problem, for example function p1 stands for problem 1****************************/
 
 
 #include <iostream>
@@ -23,7 +25,7 @@ void P5();
 int main()
 {
 	std::string problem_name;
-	std::cout << "Write the letter \"p\" or \"r\" followed by the problem numberto show the solution: \n"
+	std::cout << "Write the letter \"p\" or \"r\" followed by the problem number to show the solution: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl
 		<< "Contents: r16, r18, p1, p2, p3, p4, p5" << std::endl

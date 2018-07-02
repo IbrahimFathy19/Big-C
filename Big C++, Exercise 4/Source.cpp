@@ -1,6 +1,8 @@
-//Big C++, Exercise 4
-/*The problems is divided into functions, each function indicates the name
-of the problem, for example function p1 stands for problem 1*/
+/*****************************************************************************************************
+***********************************Big C++, Exercise**************************************************
+******************************Ibrahim Fathy Abd Elmageed**********************************************
+*************The problems are divided into functions, each function indicates the name****************
+*************of the problem, for example function p1 stands for problem 1****************************/
 
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -219,7 +221,7 @@ Employee read_employee();
 
 int main()
 {
-	std::cout << "Write the letter \"p\" followed by the problem numberto show the solution: \n"
+	std::cout << "Write the letter \"p\" followed by the problem number to show the solution: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl;
 	std::cout << "Contents: p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11," << std::endl

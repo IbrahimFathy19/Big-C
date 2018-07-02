@@ -1,4 +1,11 @@
-﻿#include <iostream>
+﻿/*****************************************************************************************************
+***********************************Big C++, Exercise**************************************************
+******************************Ibrahim Fathy Abd Elmageed**********************************************
+*************The problems are divided into functions, each function indicates the name****************
+*************of the problem, for example function p1 stands for problem 1****************************/
+
+
+#include <iostream>
 #include <vector>
 #include <ctime>
 #include <string>
@@ -144,10 +151,11 @@ bool is_perfect_square(int n);
 	@return the sum of the elements of the vector
 */
 int sum_vector_int(const std::vector<int> & vec);
+
 int main()
 {
 	std::string problem_name = "Hello";
-	std::cout << "Write the letter \"p\" followed by the problem numberto show the solution: \n"
+	std::cout << "Write the letter \"p\" followed by the problem number to show the solution: \n"
 		<< "Example: p5" << std::endl
 		<< "******" << std::endl
 		<< "Contents: p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11," << std::endl

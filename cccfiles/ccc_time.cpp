@@ -74,3 +74,24 @@ void Time::add_seconds(int s)
    const int SECONDS_PER_DAY = 60 * 60 * 24;
    time_in_secs = remainder(time_in_secs + s, SECONDS_PER_DAY);
 }
+
+
+bool Time::operator<(const Time & t) const
+{
+	if (this->time_in_secs < t.time_in_secs)
+		return true;
+	return false;
+}
+
+bool Time::operator>(const Time & t) const
+{
+	if (this->time_in_secs > t.time_in_secs)
+		return true;
+	return false;
+}
+
+std::ostream & operator<<(std::ostream & stream, const Time & t)
+{
+	stream << t.get_hours() << ":" << t.get_minutes() << ":" << t.get_seconds();
+	return stream;
+}
