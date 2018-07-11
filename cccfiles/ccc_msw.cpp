@@ -297,9 +297,9 @@ string PTCHAR2string(TCHAR* p)
    int targetLength = WideCharToMultiByte(CP_ACP, 0, p, -1, NULL, 0, NULL, FALSE);
    char* target = new char[targetLength];
    WideCharToMultiByte(CP_ACP, 0, p, -1, target, targetLength, NULL, FALSE);
-   string result(target);
+   string result_str(target);
    delete[] target;
-   return result;
+   return result_str;
 #else
    return string(p);
 #endif

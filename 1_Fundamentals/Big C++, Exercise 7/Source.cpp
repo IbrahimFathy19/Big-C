@@ -485,17 +485,17 @@ void concat(const char a[], const char b[], char result[],
 	int i = 0;
 	while (a[i] != '\0' && i < result_maxlength)
 	{
-		result[i] = a[i];
+		result_str[i] = a[i];
 		i++;
 	}
 	int j = 0;
 	while (b[j] != '\0' && i < result_maxlength)
 	{
-		result[i] = b[j];
+		result_str[i] = b[j];
 		j++;
 		i++;
 	}
-	result[result_maxlength] = '\0';
+	result_str[result_maxlength] = '\0';
 #endif
 }
 
